@@ -19,7 +19,9 @@
       "faq",
       "cards",
       "columns",
-      "fragment"
+      "fragment",
+      "carousel",
+      "blockquote"
     ]
   },
   {
@@ -50,6 +52,12 @@
       "destination-highlight", 
       "destinations-grid",
       "faq"
+    ]
+  },
+  {
+    "id": "carousel",
+    "components": [
+      "carousel-slide"
     ]
   }
 ]

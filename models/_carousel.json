@@ -1,0 +1,65 @@
+{
+  "id": "carousel",
+  "fields": [
+    {
+      "component": "text",
+      "valueType": "string",
+      "name": "title",
+      "label": "Carousel Title"
+    },
+    {
+      "component": "boolean",
+      "name": "autoplay",
+      "label": "Auto-play Slides",
+      "value": true
+    },
+    {
+      "component": "text",
+      "valueType": "number",
+      "name": "interval",
+      "label": "Auto-play Interval (seconds)",
+      "value": "5"
+    },
+    {
+      "component": "boolean",
+      "name": "showDots",
+      "label": "Show Navigation Dots",
+      "value": true
+    },
+    {
+      "component": "boolean",
+      "name": "showArrows",
+      "label": "Show Navigation Arrows",
+      "value": true
+    },
+    {
+      "component": "boolean",
+      "name": "loop",
+      "label": "Loop Slides",
+      "value": true
+    },
+    {
+      "component": "select",
+      "name": "variant",
+      "label": "Carousel Style",
+      "options": [
+        {
+          "name": "Default",
+          "value": ""
+        },
+        {
+          "name": "Cards",
+          "value": "cards"
+        },
+        {
+          "name": "Hero",
+          "value": "hero"
+        },
+        {
+          "name": "Testimonials",
+          "value": "testimonials"
+        }
+      ]
+    }
+  ]
+} 

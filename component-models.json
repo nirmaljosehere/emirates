@@ -420,5 +420,239 @@
         "valueType": "string"
       }
     ]
+  },
+  {
+    "id": "carousel",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Carousel Title"
+      },
+      {
+        "component": "boolean",
+        "name": "autoplay",
+        "label": "Auto-play Slides",
+        "value": true
+      },
+      {
+        "component": "text",
+        "valueType": "number",
+        "name": "interval",
+        "label": "Auto-play Interval (seconds)",
+        "value": "5"
+      },
+      {
+        "component": "boolean",
+        "name": "showDots",
+        "label": "Show Navigation Dots",
+        "value": true
+      },
+      {
+        "component": "boolean",
+        "name": "showArrows",
+        "label": "Show Navigation Arrows",
+        "value": true
+      },
+      {
+        "component": "boolean",
+        "name": "loop",
+        "label": "Loop Slides",
+        "value": true
+      },
+      {
+        "component": "select",
+        "name": "variant",
+        "label": "Carousel Style",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Cards",
+            "value": "cards"
+          },
+          {
+            "name": "Hero",
+            "value": "hero"
+          },
+          {
+            "name": "Testimonials",
+            "value": "testimonials"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "carousel-slide",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Slide Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Slide Title"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "subtitle",
+        "label": "Slide Subtitle"
+      },
+      {
+        "component": "richtext",
+        "name": "description",
+        "label": "Slide Description",
+        "valueType": "string"
+      },
+      {
+        "component": "aem-content",
+        "name": "primaryLink",
+        "label": "Primary CTA Link"
+      },
+      {
+        "component": "text",
+        "name": "primaryText",
+        "label": "Primary CTA Text"
+      },
+      {
+        "component": "aem-content",
+        "name": "secondaryLink",
+        "label": "Secondary CTA Link"
+      },
+      {
+        "component": "text",
+        "name": "secondaryText",
+        "label": "Secondary CTA Text"
+      },
+      {
+        "component": "select",
+        "name": "textPosition",
+        "label": "Text Position",
+        "options": [
+          {
+            "name": "Center",
+            "value": "center"
+          },
+          {
+            "name": "Left",
+            "value": "left"
+          },
+          {
+            "name": "Right",
+            "value": "right"
+          },
+          {
+            "name": "Bottom",
+            "value": "bottom"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "blockquote",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "quote",
+        "label": "Quote Text",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "author",
+        "label": "Author Name"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "authorTitle",
+        "label": "Author Title/Position"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "citation",
+        "label": "Citation/Source"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "authorImage",
+        "label": "Author Photo",
+        "multi": false
+      },
+      {
+        "component": "select",
+        "name": "variant",
+        "label": "Quote Style",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Minimal",
+            "value": "minimal"
+          },
+          {
+            "name": "Card",
+            "value": "card"
+          },
+          {
+            "name": "Emphasis",
+            "value": "emphasis"
+          },
+          {
+            "name": "Large",
+            "value": "large"
+          },
+          {
+            "name": "Center",
+            "value": "center"
+          },
+          {
+            "name": "Pull Quote",
+            "value": "pull-quote"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "alignment",
+        "label": "Text Alignment",
+        "options": [
+          {
+            "name": "Left",
+            "value": "left"
+          },
+          {
+            "name": "Center",
+            "value": "center"
+          },
+          {
+            "name": "Right",
+            "value": "right"
+          }
+        ]
+      }
+    ]
   }
 ]
