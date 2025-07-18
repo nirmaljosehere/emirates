@@ -3,15 +3,14 @@
  * Features: Touch/swipe support, auto-play, keyboard navigation, accessibility
  */
 
+import { moveInstrumentation } from '../../scripts/scripts.js';
+
 export default function decorate(block) {
   const slides = [...block.children];
   
   if (slides.length === 0) {
     return;
   }
-
-  // Clear the block and create carousel structure
-  block.innerHTML = '';
   
   const container = document.createElement('div');
   container.className = 'carousel-container';
@@ -19,11 +18,14 @@ export default function decorate(block) {
   const wrapper = document.createElement('div');
   wrapper.className = 'carousel-wrapper';
   
-  // Create slides
+  // Create slides while preserving Universal Editor attributes
   slides.forEach((slide, index) => {
     const slideElement = document.createElement('div');
     slideElement.className = 'carousel-slide';
     slideElement.setAttribute('aria-label', `Slide ${index + 1} of ${slides.length}`);
+    
+    // Preserve Universal Editor attributes from original slide
+    moveInstrumentation(slide, slideElement);
     
     // Move content from original slide
     while (slide.firstChild) {
@@ -59,6 +61,9 @@ export default function decorate(block) {
     
     wrapper.appendChild(slideElement);
   });
+  
+  // Clear the block only after processing slides
+  block.innerHTML = '';
   
   // Create navigation arrows
   const prevButton = document.createElement('button');
