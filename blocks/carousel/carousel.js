@@ -10,16 +10,18 @@ export default function decorate(block) {
   // Read carousel configuration from Universal Editor
   const config = readBlockConfig(block);
   
-  // Configuration settings with defaults
+  // Configuration settings with defaults  
   const settings = {
-    autoplay: config.autoplay !== 'false',
+    autoplay: config.autoplay === 'true' || config.autoplay === true,
     interval: parseInt(config.interval) || 5,
-    showDots: config.showdots !== 'false',
-    showArrows: config.showarrows !== 'false',
-    loop: config.loop !== 'false',
+    showDots: config.showdots === 'true' || config.showdots === true || !config.showdots, // default true
+    showArrows: config.showarrows === 'true' || config.showarrows === true || !config.showarrows, // default true
+    loop: config.loop === 'true' || config.loop === true || !config.loop, // default true
     variant: config.variant || '',
     title: config.title || ''
   };
+  
+
 
   // Filter to get actual slide content (exclude configuration rows)
   const allRows = [...block.children];
@@ -32,20 +34,20 @@ export default function decorate(block) {
       return true;
     }
     
-    // Check if it's a content row (not configuration)
+    // Skip configuration rows (readBlockConfig processes rows with 2 columns as key-value pairs)
     const cells = [...row.children];
-    
-    // Single cell with only text that looks like configuration
-    if (cells.length === 1) {
-      const cellText = cells[0].textContent.trim().toLowerCase();
-      const cellHtml = cells[0].innerHTML.trim();
+    if (cells.length === 2) {
+      const key = cells[0].textContent.trim().toLowerCase();
+      const value = cells[1].textContent.trim().toLowerCase();
       
-      // Skip rows that contain only configuration values
-      if (cellText === 'true' || cellText === 'false' || 
-          /^\d+$/.test(cellText) || // Numbers only
-          cellText.length < 3 || // Very short text
-          cellHtml === cellText || // Plain text without HTML elements
-          cellText === settings.title?.toLowerCase()) { // Skip title row
+      // These are configuration keys from the carousel model
+      const configKeys = ['title', 'autoplay', 'interval', 'showdots', 'showarrows', 'loop', 'variant'];
+      
+      if (configKeys.includes(key) || 
+          value === 'true' || value === 'false' || 
+          /^\d+$/.test(value) ||
+          ['default', 'cards', 'hero', 'testimonials'].includes(value)) {
+        
         return false;
       }
     }
@@ -53,7 +55,7 @@ export default function decorate(block) {
     // Accept rows with rich content (images, multiple elements, longer text)
     const hasImage = row.querySelector('img');
     const hasMultipleElements = row.querySelectorAll('*').length > 2;
-    const hasSubstantialText = row.textContent.trim().length > 20;
+    const hasSubstantialText = row.textContent.trim().length > 50; // Increase threshold
     
     return hasImage || hasMultipleElements || hasSubstantialText;
   });
@@ -110,6 +112,8 @@ export default function decorate(block) {
     // Get text position from slide configuration
     const slideConfig = readBlockConfig(slide);
     const textPosition = slideConfig.textposition || slideConfig.textPosition || 'left'; // default to left
+    
+
     
     // Apply Emirates styling and structure
     const img = slideElement.querySelector('img');
@@ -517,6 +521,7 @@ export default function decorate(block) {
   goToSlide(0);
   
   // Start auto-play if enabled and more than one slide
+
   if (isAutoPlaying && slideRows.length > 1) {
     startAutoPlay();
   }
