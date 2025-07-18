@@ -4,12 +4,60 @@
  */
 
 import { moveInstrumentation } from '../../scripts/scripts.js';
+import { readBlockConfig } from '../../scripts/aem.js';
 
 export default function decorate(block) {
-  const slides = [...block.children];
+  // Read carousel configuration from Universal Editor
+  const config = readBlockConfig(block);
   
-  if (slides.length === 0) {
-    return;
+  // Configuration settings with defaults
+  const settings = {
+    autoplay: config.autoplay !== 'false',
+    interval: parseInt(config.interval) || 5,
+    showDots: config.showdots !== 'false',
+    showArrows: config.showarrows !== 'false',
+    loop: config.loop !== 'false',
+    variant: config.variant || '',
+    title: config.title || ''
+  };
+
+  // Filter to only get actual carousel slide items (not configuration rows)
+  const allRows = [...block.children];
+  const slideRows = allRows.filter(row => {
+    // Check if this is a carousel slide (has data-aue-resource pointing to carousel-slide)
+    const hasSlideResource = row.querySelector('[data-aue-resource*="carousel-slide"]') || 
+                            row.hasAttribute('data-aue-resource') && row.getAttribute('data-aue-resource').includes('carousel-slide');
+    
+    // Or if it's a content row with actual slide content (not configuration)
+    const hasSlideContent = row.children.length > 0 && 
+                           !row.querySelector('p:only-child') && // Not a single paragraph (config)
+                           (row.querySelector('img') || row.textContent.trim().length > 20);
+    
+    return hasSlideResource || hasSlideContent;
+  });
+  
+  if (slideRows.length === 0) {
+    // Create default slide if no slides found
+    const defaultSlide = document.createElement('div');
+    defaultSlide.innerHTML = '<div><p>Add your carousel slides here</p></div>';
+    slideRows.push(defaultSlide);
+  }
+  
+  // Clear the block and create carousel structure
+  block.innerHTML = '';
+  
+  // Add Emirates theme styling
+  block.classList.add('emirates-carousel');
+  if (settings.variant) {
+    block.classList.add(`carousel-${settings.variant}`);
+  }
+  
+  // Add title if configured
+  if (settings.title) {
+    const titleElement = document.createElement('h2');
+    titleElement.className = 'carousel-title';
+    titleElement.textContent = settings.title;
+    block.appendChild(titleElement);
   }
   
   const container = document.createElement('div');
@@ -19,10 +67,11 @@ export default function decorate(block) {
   wrapper.className = 'carousel-wrapper';
   
   // Create slides while preserving Universal Editor attributes
-  slides.forEach((slide, index) => {
+  slideRows.forEach((slide, index) => {
     const slideElement = document.createElement('div');
-    slideElement.className = 'carousel-slide';
-    slideElement.setAttribute('aria-label', `Slide ${index + 1} of ${slides.length}`);
+    slideElement.className = 'carousel-slide emirates-slide';
+    slideElement.setAttribute('aria-label', `Slide ${index + 1} of ${slideRows.length}`);
+    slideElement.setAttribute('id', `slide-${index}`);
     
     // Preserve Universal Editor attributes from original slide
     moveInstrumentation(slide, slideElement);
@@ -32,28 +81,41 @@ export default function decorate(block) {
       slideElement.appendChild(slide.firstChild);
     }
     
-    // Wrap text content in slide-content if no image is present
+    // Apply Emirates styling and structure
     const img = slideElement.querySelector('img');
     if (!img) {
+      // Text-only slide
       const content = document.createElement('div');
-      content.className = 'slide-content';
+      content.className = 'slide-content emirates-content';
       while (slideElement.firstChild) {
         content.appendChild(slideElement.firstChild);
       }
       slideElement.appendChild(content);
+      slideElement.classList.add('text-slide');
     } else {
-      // Ensure image fills the slide
+      // Image slide
+      slideElement.classList.add('image-slide');
       img.setAttribute('loading', 'lazy');
       
-      // Create content overlay if there's text content
-      const textContent = slideElement.querySelector('h1, h2, h3, h4, h5, h6, p');
-      if (textContent) {
+      // Create content overlay for text content
+      const textElements = slideElement.querySelectorAll('h1, h2, h3, h4, h5, h6, p, ul, ol, .button-container');
+      if (textElements.length > 0) {
         const content = document.createElement('div');
-        content.className = 'slide-content';
+        content.className = 'slide-content emirates-content overlay';
         
-        // Move all text elements to overlay
-        const textElements = slideElement.querySelectorAll('h1, h2, h3, h4, h5, h6, p, ul, ol, .button-container');
-        textElements.forEach(el => content.appendChild(el));
+        textElements.forEach(el => {
+          // Add Emirates styling to text elements
+          if (el.tagName.match(/H[1-6]/)) {
+            el.classList.add('emirates-heading');
+          } else if (el.tagName === 'P') {
+            el.classList.add('emirates-text');
+          } else if (el.classList.contains('button-container')) {
+            el.classList.add('emirates-buttons');
+            const buttons = el.querySelectorAll('a, button');
+            buttons.forEach(btn => btn.classList.add('emirates-button'));
+          }
+          content.appendChild(el);
+        });
         
         slideElement.appendChild(content);
       }
@@ -62,74 +124,89 @@ export default function decorate(block) {
     wrapper.appendChild(slideElement);
   });
   
-  // Clear the block only after processing slides
-  block.innerHTML = '';
-  
-  // Create navigation arrows
-  const prevButton = document.createElement('button');
-  prevButton.className = 'carousel-nav prev';
-  prevButton.innerHTML = '❮';
-  prevButton.setAttribute('aria-label', 'Previous slide');
-  prevButton.type = 'button';
-  
-  const nextButton = document.createElement('button');
-  nextButton.className = 'carousel-nav next';
-  nextButton.innerHTML = '❯';
-  nextButton.setAttribute('aria-label', 'Next slide');
-  nextButton.type = 'button';
-  
-  // Create dots/indicators
-  const dotsContainer = document.createElement('div');
-  dotsContainer.className = 'carousel-dots';
-  dotsContainer.setAttribute('role', 'tablist');
-  dotsContainer.setAttribute('aria-label', 'Carousel slides');
-  
-  slides.forEach((_, index) => {
-    const dot = document.createElement('button');
-    dot.className = 'carousel-dot';
-    dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-    dot.setAttribute('role', 'tab');
-    dot.setAttribute('aria-controls', `slide-${index}`);
-    dot.type = 'button';
+  // Create navigation arrows (only if enabled and multiple slides)
+  let prevButton, nextButton;
+  if (settings.showArrows && slideRows.length > 1) {
+    prevButton = document.createElement('button');
+    prevButton.className = 'carousel-nav prev emirates-nav';
+    prevButton.innerHTML = '❮';
+    prevButton.setAttribute('aria-label', 'Previous slide');
+    prevButton.type = 'button';
     
-    if (index === 0) {
-      dot.classList.add('active');
-      dot.setAttribute('aria-selected', 'true');
-    } else {
-      dot.setAttribute('aria-selected', 'false');
-    }
+    nextButton = document.createElement('button');
+    nextButton.className = 'carousel-nav next emirates-nav';
+    nextButton.innerHTML = '❯';
+    nextButton.setAttribute('aria-label', 'Next slide');
+    nextButton.type = 'button';
+  }
+  
+  // Create dots/indicators (only if enabled and multiple slides)
+  let dotsContainer;
+  if (settings.showDots && slideRows.length > 1) {
+    dotsContainer = document.createElement('div');
+    dotsContainer.className = 'carousel-dots emirates-dots';
+    dotsContainer.setAttribute('role', 'tablist');
+    dotsContainer.setAttribute('aria-label', 'Carousel slides');
     
-    dotsContainer.appendChild(dot);
-  });
+    slideRows.forEach((_, index) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot emirates-dot';
+      dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-controls', `slide-${index}`);
+      dot.type = 'button';
+      
+      if (index === 0) {
+        dot.classList.add('active');
+        dot.setAttribute('aria-selected', 'true');
+      } else {
+        dot.setAttribute('aria-selected', 'false');
+      }
+      
+      dotsContainer.appendChild(dot);
+    });
+  }
   
-  // Create auto-play controls
-  const controlsContainer = document.createElement('div');
-  controlsContainer.className = 'carousel-controls';
-  
-  const playPauseButton = document.createElement('button');
-  playPauseButton.className = 'carousel-play-pause';
-  playPauseButton.textContent = 'Pause';
-  playPauseButton.setAttribute('aria-label', 'Pause auto-play');
-  playPauseButton.type = 'button';
-  
-  controlsContainer.appendChild(playPauseButton);
+  // Create auto-play controls (only if autoplay is enabled)
+  let controlsContainer, playPauseButton;
+  if (settings.autoplay && slideRows.length > 1) {
+    controlsContainer = document.createElement('div');
+    controlsContainer.className = 'carousel-controls emirates-controls';
+    
+    playPauseButton = document.createElement('button');
+    playPauseButton.className = 'carousel-play-pause emirates-play-pause';
+    playPauseButton.textContent = 'Pause';
+    playPauseButton.setAttribute('aria-label', 'Pause auto-play');
+    playPauseButton.type = 'button';
+    
+    controlsContainer.appendChild(playPauseButton);
+  }
   
   // Assemble carousel
   container.appendChild(wrapper);
-  container.appendChild(prevButton);
-  container.appendChild(nextButton);
+  if (prevButton && nextButton) {
+    container.appendChild(prevButton);
+    container.appendChild(nextButton);
+  }
   
   block.appendChild(container);
-  block.appendChild(dotsContainer);
   
-  // Only show controls if more than one slide
-  if (slides.length > 1) {
+  if (dotsContainer) {
+    block.appendChild(dotsContainer);
+  }
+  
+  if (controlsContainer) {
     block.appendChild(controlsContainer);
+  }
+  
+  // Only set up carousel functionality if there are multiple slides
+  if (slideRows.length <= 1) {
+    return; // Exit early for single slide
   }
   
   // Carousel state
   let currentSlide = 0;
-  let isAutoPlaying = true;
+  let isAutoPlaying = settings.autoplay;
   let autoPlayInterval;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -137,11 +214,11 @@ export default function decorate(block) {
   
   // Auto-play functionality
   const startAutoPlay = () => {
-    if (!isAutoPlaying || slides.length <= 1) return;
+    if (!isAutoPlaying || slideRows.length <= 1) return;
     
     autoPlayInterval = setInterval(() => {
       nextSlide();
-    }, 4000); // 4 seconds
+    }, (settings.interval * 1000)); // Use configured interval
   };
   
   const stopAutoPlay = () => {
@@ -175,7 +252,7 @@ export default function decorate(block) {
       announcement.setAttribute('aria-live', 'polite');
       announcement.setAttribute('aria-atomic', 'true');
       announcement.className = 'sr-only';
-      announcement.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+      announcement.textContent = `Slide ${currentSlide + 1} of ${slideRows.length}`;
       document.body.appendChild(announcement);
       
       setTimeout(() => {
@@ -187,49 +264,83 @@ export default function decorate(block) {
   };
   
   const nextSlide = () => {
-    const nextIndex = (currentSlide + 1) % slides.length;
-    goToSlide(nextIndex);
+    if (currentSlide < slideRows.length - 1) {
+      currentSlide++;
+    } else if (settings.loop) {
+      currentSlide = 0;
+    }
+    updateCarousel();
   };
   
   const prevSlide = () => {
-    const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
-    goToSlide(prevIndex);
+    if (currentSlide > 0) {
+      currentSlide--;
+    } else if (settings.loop) {
+      currentSlide = slideRows.length - 1;
+    }
+    updateCarousel();
   };
   
-  // Event listeners
-  nextButton.addEventListener('click', () => {
-    nextSlide();
-    stopAutoPlay();
-  });
-  
-  prevButton.addEventListener('click', () => {
-    prevSlide();
-    stopAutoPlay();
-  });
-  
-  // Dot navigation
-  dotsContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('carousel-dot')) {
-      const index = [...dotsContainer.children].indexOf(e.target);
-      goToSlide(index);
-      stopAutoPlay();
+  // Update carousel display
+  const updateCarousel = () => {
+    const offset = -currentSlide * 100;
+    wrapper.style.transform = `translateX(${offset}%)`;
+    
+    // Update dots (only if they exist)
+    if (dotsContainer) {
+      dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+        dot.setAttribute('aria-selected', i === currentSlide ? 'true' : 'false');
+      });
     }
-  });
-  
-  // Play/pause toggle
-  playPauseButton.addEventListener('click', () => {
-    if (isAutoPlaying) {
-      isAutoPlaying = false;
+  };
+
+  // Event listeners (only if elements exist)
+  if (nextButton) {
+    nextButton.addEventListener('click', () => {
       stopAutoPlay();
-      playPauseButton.textContent = 'Play';
-      playPauseButton.setAttribute('aria-label', 'Start auto-play');
-    } else {
-      isAutoPlaying = true;
-      startAutoPlay();
-      playPauseButton.textContent = 'Pause';
-      playPauseButton.setAttribute('aria-label', 'Pause auto-play');
-    }
-  });
+      nextSlide();
+      if (isAutoPlaying) startAutoPlay();
+    });
+  }
+  
+  if (prevButton) {
+    prevButton.addEventListener('click', () => {
+      stopAutoPlay();
+      prevSlide();
+      if (isAutoPlaying) startAutoPlay();
+    });
+  }
+  
+  // Dot navigation (only if dots exist)
+  if (dotsContainer) {
+    dotsContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('carousel-dot')) {
+        const index = [...dotsContainer.children].indexOf(e.target);
+        currentSlide = index;
+        updateCarousel();
+        stopAutoPlay();
+        if (isAutoPlaying) startAutoPlay();
+      }
+    });
+  }
+  
+  // Play/pause toggle (only if button exists)
+  if (playPauseButton) {
+    playPauseButton.addEventListener('click', () => {
+      if (isAutoPlaying) {
+        isAutoPlaying = false;
+        stopAutoPlay();
+        playPauseButton.textContent = 'Play';
+        playPauseButton.setAttribute('aria-label', 'Start auto-play');
+      } else {
+        isAutoPlaying = true;
+        startAutoPlay();
+        playPauseButton.textContent = 'Pause';
+        playPauseButton.setAttribute('aria-label', 'Pause auto-play');
+      }
+    });
+  }
   
   // Keyboard navigation
   block.addEventListener('keydown', (e) => {

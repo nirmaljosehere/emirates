@@ -1,9 +1,30 @@
-/* Carousel Block */
+/* Carousel Block - Emirates Styling */
 .carousel {
   position: relative;
   overflow: hidden;
   max-width: 100%;
   margin: 0 auto;
+}
+
+/* Emirates Carousel Theme */
+.carousel.emirates-carousel {
+  background: var(--background-color);
+  font-family: emirates-bold, Arial, sans-serif;
+}
+
+.carousel.emirates-carousel .carousel-title {
+  font-family: emirates-bold, Arial, sans-serif;
+  font-size: 2.5rem;
+  color: #dc143c;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+.carousel.emirates-carousel .carousel-container {
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(220, 20, 60, 0.15);
+  overflow: hidden;
 }
 
 .carousel .carousel-container {
@@ -40,7 +61,17 @@
   display: block;
 }
 
-.carousel .carousel-slide .slide-content {
+/* Emirates Slide Styling */
+.carousel .emirates-slide {
+  background: linear-gradient(135deg, #1a237e, #3949ab);
+  color: white;
+}
+
+.carousel .emirates-slide.image-slide {
+  background: none;
+}
+
+.carousel .emirates-slide .slide-content {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -48,7 +79,63 @@
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
   color: white;
   padding: 40px 20px 20px;
+}
+
+.carousel .emirates-slide .emirates-content {
+  font-family: emirates-bold, Arial, sans-serif;
+}
+
+.carousel .emirates-slide .emirates-heading {
+  font-family: emirates-bold, Arial, sans-serif;
+  font-size: 2rem;
+  color: #ffeb3b;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.carousel .emirates-slide .emirates-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.carousel .emirates-slide .emirates-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.carousel .emirates-slide .emirates-button {
+  padding: 12px 24px;
+  border: 2px solid #dc143c;
+  background: #dc143c;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-family: emirates-bold, Arial, sans-serif;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.carousel .emirates-slide .emirates-button:hover {
+  background: transparent;
+  color: #dc143c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+}
+
+.carousel .emirates-slide.text-slide .slide-content {
+  position: static;
+  background: none;
+  padding: 2rem;
   text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .carousel .carousel-slide .slide-content h2 {
