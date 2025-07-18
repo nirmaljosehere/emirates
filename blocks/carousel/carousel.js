@@ -362,7 +362,7 @@ export default function decorate(block) {
         break;
       case 'End':
         e.preventDefault();
-        goToSlide(slides.length - 1);
+        goToSlide(slideRows.length - 1);
         stopAutoPlay();
         break;
     }
@@ -487,15 +487,15 @@ export default function decorate(block) {
   goToSlide(0);
   
   // Start auto-play if enabled and more than one slide
-  if (isAutoPlaying && slides.length > 1) {
+  if (isAutoPlaying && slideRows.length > 1) {
     startAutoPlay();
   }
   
   // Hide controls if only one slide
-  if (slides.length <= 1) {
-    prevButton.style.display = 'none';
-    nextButton.style.display = 'none';
-    dotsContainer.style.display = 'none';
+  if (slideRows.length <= 1) {
+    if (prevButton) prevButton.style.display = 'none';
+    if (nextButton) nextButton.style.display = 'none';
+    if (dotsContainer) dotsContainer.style.display = 'none';
   }
   
   // Add ARIA attributes for accessibility
@@ -507,7 +507,7 @@ export default function decorate(block) {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        if (isAutoPlaying && slides.length > 1) {
+        if (isAutoPlaying && slideRows.length > 1) {
           startAutoPlay();
         }
       } else {
