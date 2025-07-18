@@ -21,8 +21,41 @@ export default function decorate(block) {
     title: config.title || ''
   };
 
-  // Process all children as slides (similar to cards block)
-  const slideRows = [...block.children];
+  // Filter to get actual slide content (exclude configuration rows)
+  const allRows = [...block.children];
+  const slideRows = allRows.filter(row => {
+    // Check if this is a carousel slide component
+    const hasSlideResource = row.querySelector('[data-aue-resource*="carousel-slide"]') || 
+                            (row.hasAttribute('data-aue-resource') && row.getAttribute('data-aue-resource').includes('carousel-slide'));
+    
+    if (hasSlideResource) {
+      return true;
+    }
+    
+    // Check if it's a content row (not configuration)
+    const cells = [...row.children];
+    
+    // Single cell with only text that looks like configuration
+    if (cells.length === 1) {
+      const cellText = cells[0].textContent.trim().toLowerCase();
+      const cellHtml = cells[0].innerHTML.trim();
+      
+      // Skip rows that contain only configuration values
+      if (cellText === 'true' || cellText === 'false' || 
+          /^\d+$/.test(cellText) || // Numbers only
+          cellText.length < 3 || // Very short text
+          cellHtml === cellText) { // Plain text without HTML elements
+        return false;
+      }
+    }
+    
+    // Accept rows with rich content (images, multiple elements, longer text)
+    const hasImage = row.querySelector('img');
+    const hasMultipleElements = row.querySelectorAll('*').length > 2;
+    const hasSubstantialText = row.textContent.trim().length > 20;
+    
+    return hasImage || hasMultipleElements || hasSubstantialText;
+  });
   
   // If no slides, create a default placeholder that can be edited
   if (slideRows.length === 0) {
