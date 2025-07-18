@@ -1,291 +1,55 @@
-/* Emirates Hero Banner Styling */
-.hero-container {
+main .hero-container > div {
   max-width: unset;
+}
+
+main .hero-container {
+  padding: 0;
 }
 
 .hero {
   position: relative;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #dc143c 100%);
-  color: white;
-  text-align: center;
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  margin-top: 0;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ffffff;stop-opacity:0.1"/><stop offset="100%" style="stop-color:%23ffffff;stop-opacity:0"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/></svg>') center/cover,
-    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-  z-index: 1;
-}
-
-.hero > div {
-  position: relative;
-  z-index: 2;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 100px 24px 80px;
-  animation: heroFadeInUp 1.2s ease-out;
+  padding: 32px;
+  min-height: 300px;
 }
 
 .hero h1 {
-  font-family: emirates, roboto-condensed, roboto-condensed-fallback, sans-serif !important;
-  font-size: clamp(3rem, 6vw, 5rem) !important;
-  font-weight: bold !important;
-  margin: 0 0 24px 0 !important;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3) !important;
-  line-height: 1.1 !important;
-  letter-spacing: -0.02em !important;
-  color: white !important;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
 }
 
 .hero h2 {
-  font-family: roboto, roboto-fallback, sans-serif !important;
-  font-size: clamp(1.3rem, 3vw, 2rem) !important;
-  font-weight: 400 !important;
-  margin: 0 0 40px 0 !important;
-  opacity: 0.95 !important;
-  line-height: 1.4 !important;
-  max-width: 900px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  color: white !important;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2) !important;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
+.hero h3 {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
 }
 
 .hero p {
-  margin: 40px 0 0 0 !important;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
 }
 
-.hero .button-container {
-  margin: 40px 0 0 0 !important;
-  display: flex !important;
-  gap: 16px !important;
-  justify-content: center !important;
-  flex-wrap: wrap !important;
-}
-
-.hero .button {
-  background: #dc143c !important;
-  color: white !important;
-  border: none !important;
-  padding: 18px 36px !important;
-  font-size: 18px !important;
-  font-weight: 600 !important;
-  border-radius: 8px !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
-  display: inline-block !important;
-  transition: all 0.3s ease !important;
-  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-  font-family: emirates, roboto-condensed, sans-serif !important;
-  min-width: 200px !important;
-  position: relative !important;
-  overflow: hidden !important;
-}
-
-.hero .button::before {
-  content: '';
+.hero picture {
   position: absolute;
-  top: 0;
-  left: -100%;
+  z-index: -1;
+  inset: 0;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.hero img {
+  object-fit: cover;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.hero .button:hover::before {
-  left: 100%;
-}
-
-.hero .button:hover {
-  background: #b91238 !important;
-  transform: translateY(-3px) !important;
-  box-shadow: 0 8px 25px rgba(220, 20, 60, 0.6) !important;
-}
-
-.hero .button:active {
-  transform: translateY(-1px) !important;
-}
-
-.hero .button.secondary {
-  background: transparent !important;
-  border: 2px solid white !important;
-  color: white !important;
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2) !important;
-}
-
-.hero .button.secondary:hover {
-  background: white !important;
-  color: #dc143c !important;
-  border-color: white !important;
-  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4) !important;
-}
-
-/* Emirates brand elements */
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent);
-  z-index: 1;
-}
-
-/* Floating elements for visual appeal */
-.hero .floating-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.hero .floating-elements::before,
-.hero .floating-elements::after {
-  content: '';
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
-  animation: float 6s ease-in-out infinite;
-}
-
-.hero .floating-elements::before {
-  top: 20%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.hero .floating-elements::after {
-  bottom: 20%;
-  right: 10%;
-  animation-delay: 3s;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .hero {
-    min-height: 70vh;
-  }
-  
-  .hero > div {
-    padding: 80px 16px 60px;
-  }
-  
-  .hero h1 {
-    font-size: 2.5rem !important;
-    margin-bottom: 20px !important;
-  }
-  
-  .hero h2 {
-    font-size: 1.3rem !important;
-    margin-bottom: 32px !important;
-  }
-  
-  .hero .button-container {
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 12px !important;
-  }
-  
-  .hero .button {
-    padding: 16px 32px !important;
-    font-size: 16px !important;
-    min-width: 180px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero {
-    min-height: 60vh;
-  }
-  
-  .hero h1 {
-    font-size: 2rem !important;
-    margin-bottom: 16px !important;
-  }
-  
-  .hero h2 {
-    font-size: 1.1rem !important;
-    margin-bottom: 28px !important;
-  }
-  
-  .hero .button {
-    padding: 14px 28px !important;
-    font-size: 15px !important;
-    min-width: 160px !important;
-  }
-}
-
-/* Winter sun specific styling */
-.hero.winter-sun {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 30%, #ffeb3b 60%, #dc143c 100%);
-}
-
-.hero.winter-sun::before {
-  background: 
-    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.3)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.2)"/><circle cx="60" cy="80" r="1" fill="rgba(255,255,255,0.4)"/><circle cx="40" cy="60" r="1.2" fill="rgba(255,255,255,0.25)"/></svg>') repeat,
-    radial-gradient(ellipse at top, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-  opacity: 0.8;
-}
-
-/* Animation keyframes */
-@keyframes heroFadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-20px) scale(1.1);
-    opacity: 0.6;
-  }
-}
-
-/* Enhanced visual effects */
-.hero.enhanced {
-  background-attachment: fixed;
-}
-
-.hero.enhanced::before {
-  animation: shimmer 8s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%, 100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 0.8;
-  }
 }
