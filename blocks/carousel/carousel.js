@@ -44,7 +44,8 @@ export default function decorate(block) {
       if (cellText === 'true' || cellText === 'false' || 
           /^\d+$/.test(cellText) || // Numbers only
           cellText.length < 3 || // Very short text
-          cellHtml === cellText) { // Plain text without HTML elements
+          cellHtml === cellText || // Plain text without HTML elements
+          cellText === settings.title?.toLowerCase()) { // Skip title row
         return false;
       }
     }
@@ -106,27 +107,31 @@ export default function decorate(block) {
       slideElement.appendChild(slide.firstChild);
     }
     
+    // Get text position from slide configuration
+    const slideConfig = readBlockConfig(slide);
+    const textPosition = slideConfig.textposition || slideConfig.textPosition || 'left'; // default to left
+    
     // Apply Emirates styling and structure
     const img = slideElement.querySelector('img');
     if (!img) {
       // Text-only slide
       const content = document.createElement('div');
-      content.className = 'slide-content emirates-content';
+      content.className = `slide-content emirates-content text-${textPosition}`;
       while (slideElement.firstChild) {
         content.appendChild(slideElement.firstChild);
       }
       slideElement.appendChild(content);
-      slideElement.classList.add('text-slide');
+      slideElement.classList.add('text-slide', `text-${textPosition}`);
     } else {
       // Image slide
-      slideElement.classList.add('image-slide');
+      slideElement.classList.add('image-slide', `text-${textPosition}`);
       img.setAttribute('loading', 'lazy');
       
       // Create content overlay for text content
       const textElements = slideElement.querySelectorAll('h1, h2, h3, h4, h5, h6, p, ul, ol, .button-container');
       if (textElements.length > 0) {
         const content = document.createElement('div');
-        content.className = 'slide-content emirates-content overlay';
+        content.className = `slide-content emirates-content overlay text-${textPosition}`;
         
         textElements.forEach(el => {
           // Add Emirates styling to text elements
