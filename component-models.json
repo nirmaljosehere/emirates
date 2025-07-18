@@ -214,5 +214,212 @@
         "valueType": "string"
       }
     ]
+  },
+  {
+    "id": "destination-highlight",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Destination Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Destination Title"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "subtitle",
+        "label": "Destination Subtitle"
+      },
+      {
+        "component": "richtext",
+        "name": "description",
+        "label": "Description",
+        "valueType": "string"
+      },
+      {
+        "component": "multiselect",
+        "name": "features",
+        "label": "Key Features",
+        "options": [
+          {
+            "name": "Direct flights",
+            "value": "direct-flights"
+          },
+          {
+            "name": "Luxury resorts",
+            "value": "luxury-resorts"
+          },
+          {
+            "name": "Cultural experiences",
+            "value": "cultural"
+          },
+          {
+            "name": "Adventure activities",
+            "value": "adventure"
+          },
+          {
+            "name": "Fine dining",
+            "value": "dining"
+          },
+          {
+            "name": "Shopping",
+            "value": "shopping"
+          }
+        ]
+      },
+      {
+        "component": "aem-content",
+        "name": "primaryLink",
+        "label": "Primary CTA Link"
+      },
+      {
+        "component": "text",
+        "name": "primaryText",
+        "label": "Primary CTA Text"
+      },
+      {
+        "component": "aem-content",
+        "name": "secondaryLink",
+        "label": "Secondary CTA Link"
+      },
+      {
+        "component": "text",
+        "name": "secondaryText",
+        "label": "Secondary CTA Text"
+      },
+      {
+        "component": "boolean",
+        "name": "reverse",
+        "label": "Reverse Layout"
+      }
+    ]
+  },
+  {
+    "id": "destinations-grid",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Section Title"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "subtitle",
+        "label": "Section Subtitle"
+      },
+      {
+        "component": "text",
+        "valueType": "number",
+        "name": "columns",
+        "label": "Grid Columns",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "id": "destination-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Destination Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Destination Name"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "subtitle",
+        "label": "Location/Region"
+      },
+      {
+        "component": "richtext",
+        "name": "description",
+        "label": "Description",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "price",
+        "label": "Starting Price"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "badge",
+        "label": "Badge Text (e.g., Popular, New)"
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Destination Link"
+      },
+      {
+        "component": "text",
+        "name": "linkText",
+        "label": "CTA Button Text"
+      },
+      {
+        "component": "boolean",
+        "name": "featured",
+        "label": "Featured Destination"
+      }
+    ]
+  },
+  {
+    "id": "faq",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "FAQ Section Title"
+      },
+      {
+        "component": "richtext",
+        "name": "intro",
+        "label": "Introduction Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "faq-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "question",
+        "label": "Question"
+      },
+      {
+        "component": "richtext",
+        "name": "answer",
+        "label": "Answer",
+        "valueType": "string"
+      }
+    ]
   }
 ]

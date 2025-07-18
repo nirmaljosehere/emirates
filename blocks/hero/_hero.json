@@ -1,8 +1,8 @@
 {
   "definitions": [
     {
-      "title": "Hero",
-      "id": "hero",
+      "title": "Emirates Hero Banner",
+      "id": "emirates-hero",
       "plugins": {
         "xwalk": {
           "page": {

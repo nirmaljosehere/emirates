@@ -1,37 +1,152 @@
-.hero-container .hero-wrapper {
+/* Emirates hero banner styling */
+.hero-container {
   max-width: unset;
-  padding: 0;
 }
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  text-align: center;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/icons/winter-sun-bg.jpg') center/cover no-repeat;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.hero > div {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
 }
 
 .hero h1 {
-  max-width: 1200px;
+  font-family: var(--emirates-font-family);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: bold;
+  margin: 0 0 24px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+}
+
+.hero h2 {
+  font-family: var(--body-font-family);
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 400;
+  margin: 0 0 32px 0;
+  opacity: 0.95;
+  line-height: 1.4;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-  color: var(--background-color);
 }
 
-.hero picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+.hero .button-container {
+  margin: 32px 0 0 0;
 }
 
-.hero img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
+.hero .button {
+  background: var(--emirates-red);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
 }
 
-@media (width >= 900px) {
+.hero .button:hover {
+  background: #b91238;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(220, 20, 60, 0.4);
+}
+
+.hero .button:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .hero {
-    padding: 40px 32px;
+    min-height: 60vh;
+  }
+  
+  .hero > div {
+    padding: 60px 16px 40px;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero h2 {
+    font-size: 1.2rem;
+  }
+  
+  .hero .button {
+    padding: 14px 28px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: 50vh;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+    margin-bottom: 16px;
+  }
+  
+  .hero h2 {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+  }
+}
+
+/* Winter sun specific styling */
+.hero.winter-sun {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 50%, #ffeb3b 100%);
+}
+
+.hero.winter-sun::before {
+  background: url('/icons/palm-trees-beach.jpg') center/cover no-repeat;
+  opacity: 0.7;
+}
+
+/* Animation for hero content */
+.hero > div {
+  animation: heroFadeIn 1s ease-out;
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
