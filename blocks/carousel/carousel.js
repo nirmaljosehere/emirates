@@ -21,25 +21,17 @@ export default function decorate(block) {
     title: config.title || ''
   };
 
-  // Filter to only get actual carousel slide items (not configuration rows)
-  const allRows = [...block.children];
-  const slideRows = allRows.filter(row => {
-    // Check if this is a carousel slide (has data-aue-resource pointing to carousel-slide)
-    const hasSlideResource = row.querySelector('[data-aue-resource*="carousel-slide"]') || 
-                            row.hasAttribute('data-aue-resource') && row.getAttribute('data-aue-resource').includes('carousel-slide');
-    
-    // Or if it's a content row with actual slide content (not configuration)
-    const hasSlideContent = row.children.length > 0 && 
-                           !row.querySelector('p:only-child') && // Not a single paragraph (config)
-                           (row.querySelector('img') || row.textContent.trim().length > 20);
-    
-    return hasSlideResource || hasSlideContent;
-  });
+  // Process all children as slides (similar to cards block)
+  const slideRows = [...block.children];
   
+  // If no slides, create a default placeholder that can be edited
   if (slideRows.length === 0) {
-    // Create default slide if no slides found
+    // Create a default slide that can be edited in Universal Editor
     const defaultSlide = document.createElement('div');
     defaultSlide.innerHTML = '<div><p>Add your carousel slides here</p></div>';
+    defaultSlide.setAttribute('data-aue-resource', 'urn:aemconnection:/content/slides/default');
+    defaultSlide.setAttribute('data-aue-type', 'component');
+    defaultSlide.setAttribute('data-aue-filter', 'carousel-slide');
     slideRows.push(defaultSlide);
   }
   
