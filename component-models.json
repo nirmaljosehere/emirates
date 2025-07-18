@@ -209,9 +209,7 @@
       {
         "component": "text",
         "name": "text",
-        "value": "",
-        "label": "Text",
-        "valueType": "string"
+        "label": "Text"
       },
       {
         "component": "select",
