@@ -2,6 +2,11 @@
 
 A high-performance, accessible clone of the Emirates winter-sun destinations page built using Adobe Experience Manager (AEM) Crosswalk with Universal Editor support. This project demonstrates modern web development practices with Emirates branding and optimal performance.
 
+## Environments
+- Preview: https://main--emirates--nirmaljosehere.aem.page/
+- Live: https://main--emirates--nirmaljosehere.aem.live/
+
+
 ## 🏆 Project Overview
 
 This website clone replicates the Emirates winter-sun destination page (https://www.emirates.com/uk/english/destinations/winter-sun/) with:

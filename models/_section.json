@@ -33,6 +33,10 @@
             {
               "name": "Highlight",
               "value": "highlight"
+            },
+            {
+              "name": "Emirates Theme",
+              "value": "emirates"
             }
           ]
         }
@@ -48,6 +52,10 @@
         "button",
         "title",
         "hero",
+        "emirates-hero",
+        "destination-highlight",
+        "destinations-grid",
+        "faq",
         "cards",
         "columns",
         "fragment"

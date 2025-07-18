@@ -10,9 +10,13 @@
     "components": [
       "text",
       "image",
-      "button",
+      "button", 
       "title",
       "hero",
+      "emirates-hero",
+      "destination-highlight",
+      "destinations-grid",
+      "faq",
       "cards",
       "columns",
       "fragment"
@@ -37,6 +41,15 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "emirates",
+    "components": [
+      "emirates-hero",
+      "destination-highlight", 
+      "destinations-grid",
+      "faq"
     ]
   }
 ]
