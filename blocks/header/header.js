@@ -10,11 +10,9 @@ function closeOnEscape(e) {
     const navSections = nav.querySelector('.nav-sections');
     const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
     if (navSectionExpanded && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
       toggleAllNavSections(navSections);
       navSectionExpanded.focus();
     } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
       toggleMenu(nav, navSections);
       nav.querySelector('button').focus();
     }
@@ -27,10 +25,8 @@ function closeOnFocusLost(e) {
     const navSections = nav.querySelector('.nav-sections');
     const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
     if (navSectionExpanded && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
       toggleAllNavSections(navSections, false);
     } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
       toggleMenu(nav, navSections, false);
     }
   }
@@ -41,7 +37,6 @@ function openOnKeydown(e) {
   const isNavDrop = focused.className === 'nav-drop';
   if (isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
     const dropExpanded = focused.getAttribute('aria-expanded') === 'true';
-    // eslint-disable-next-line no-use-before-define
     toggleAllNavSections(focused.closest('.nav-sections'));
     focused.setAttribute('aria-expanded', dropExpanded ? 'false' : 'true');
   }
@@ -75,6 +70,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
   button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
+  
   // enable nav dropdown keyboard accessibility
   const navDrops = navSections.querySelectorAll('.nav-drop');
   if (isDesktop.matches) {
@@ -93,9 +89,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 
   // enable menu collapse on escape keypress
   if (!expanded || isDesktop.matches) {
-    // collapse menu on escape press
     window.addEventListener('keydown', closeOnEscape);
-    // collapse menu on focus lost
     nav.addEventListener('focusout', closeOnFocusLost);
   } else {
     window.removeEventListener('keydown', closeOnEscape);
@@ -104,10 +98,32 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 }
 
 /**
+ * Create Emirates two-level header structure
+ */
+function createEmiratesHeaderStructure() {
+  // Create top header for language/region selector
+  const headerTop = document.createElement('div');
+  headerTop.className = 'header-top';
+  headerTop.innerHTML = `
+    <div class="header-top-content">
+      <a href="/countries">United Kingdom - English</a>
+      <a href="/search">🔍 Search</a>
+      <a href="/login">Login</a>
+    </div>
+  `;
+  
+  // Insert at the top of the body
+  document.body.insertBefore(headerTop, document.body.firstChild);
+}
+
+/**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
+  // Create Emirates two-level header structure
+  createEmiratesHeaderStructure();
+  
   // load nav as fragment
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
@@ -125,11 +141,21 @@ export default async function decorate(block) {
     if (section) section.classList.add(`nav-${c}`);
   });
 
+  // Enhance brand section for Emirates
   const navBrand = nav.querySelector('.nav-brand');
-  const brandLink = navBrand.querySelector('.button');
-  if (brandLink) {
-    brandLink.className = '';
-    brandLink.closest('.button-container').className = '';
+  if (navBrand) {
+    const brandLink = navBrand.querySelector('.button, a');
+    if (brandLink) {
+      brandLink.className = '';
+      brandLink.textContent = 'Emirates';
+      brandLink.href = '/';
+      if (brandLink.closest('.button-container')) {
+        brandLink.closest('.button-container').className = '';
+      }
+    } else {
+      // Create default Emirates brand
+      navBrand.innerHTML = '<a href="/">Emirates</a>';
+    }
   }
 
   const navSections = nav.querySelector('.nav-sections');
@@ -146,6 +172,18 @@ export default async function decorate(block) {
     });
   }
 
+  // Enhance tools section
+  const navTools = nav.querySelector('.nav-tools');
+  if (navTools) {
+    // Ensure any buttons have proper Emirates styling
+    const buttons = navTools.querySelectorAll('a, .button');
+    buttons.forEach(button => {
+      if (!button.classList.contains('button')) {
+        button.classList.add('button');
+      }
+    });
+  }
+
   // hamburger for mobile
   const hamburger = document.createElement('div');
   hamburger.classList.add('nav-hamburger');
@@ -155,6 +193,7 @@ export default async function decorate(block) {
   hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
   nav.prepend(hamburger);
   nav.setAttribute('aria-expanded', 'false');
+  
   // prevent mobile nav behavior on window resize
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
@@ -163,4 +202,7 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
+  
+  // Force Emirates styling on the block
+  block.classList.add('emirates-header');
 }

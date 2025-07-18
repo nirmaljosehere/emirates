@@ -1,6 +1,6 @@
 /**
  * Emirates Destinations Grid Block
- * Creates a responsive grid of destination cards
+ * Creates a responsive grid of destination cards from AEM content
  */
 
 // Intersection Observer for scroll animations
@@ -24,8 +24,8 @@ function parseDestinationData(row) {
   const cells = [...row.children];
   const destination = {};
   
-  // Expected structure: Image | Title | Description | Features | Price | Button
-  if (cells.length >= 3) {
+  if (cells.length >= 2) {
+    // First cell - image
     const imageCell = cells[0];
     const img = imageCell.querySelector('img');
     if (img) {
@@ -35,68 +35,68 @@ function parseDestinationData(row) {
       };
     }
     
+    // Second cell - content
     const contentCell = cells[1];
-    const content = contentCell.innerHTML;
+    const contentHTML = contentCell.innerHTML;
     
-    // Parse content
+    // Parse content using a temporary div
     const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = content;
+    tempDiv.innerHTML = contentHTML;
     
-    const title = tempDiv.querySelector('h3, h2, strong') || tempDiv.querySelector('p');
-    if (title) {
-      destination.title = title.textContent.trim();
-      title.remove();
+    // Extract title (h2, h3, or strong)
+    const titleElement = tempDiv.querySelector('h2, h3, strong');
+    if (titleElement) {
+      destination.title = titleElement.textContent.trim();
+      titleElement.remove();
     }
     
-    const subtitle = tempDiv.querySelector('em, .subtitle');
-    if (subtitle) {
-      destination.subtitle = subtitle.textContent.trim();
-      subtitle.remove();
+    // Extract subtitle (em or italic text)
+    const subtitleElement = tempDiv.querySelector('em, i');
+    if (subtitleElement) {
+      destination.subtitle = subtitleElement.textContent.trim();
+      subtitleElement.remove();
     }
     
-    const description = tempDiv.querySelector('p');
-    if (description) {
-      destination.description = description.textContent.trim();
-      description.remove();
+    // Extract description (first paragraph)
+    const descriptionElement = tempDiv.querySelector('p');
+    if (descriptionElement) {
+      destination.description = descriptionElement.textContent.trim();
+      descriptionElement.remove();
     }
     
-    const features = tempDiv.querySelectorAll('ul li, li');
-    if (features.length > 0) {
-      destination.features = [...features].map(li => li.textContent.trim());
+    // Extract features (ul/li)
+    const featuresList = tempDiv.querySelector('ul');
+    if (featuresList) {
+      destination.features = [...featuresList.querySelectorAll('li')].map(li => li.textContent.trim());
+      featuresList.remove();
     }
     
-    // Parse additional data from other cells
-    if (cells.length >= 4) {
-      const priceCell = cells[2];
-      const priceText = priceCell.textContent.trim();
-      if (priceText && priceText.includes('$') || priceText.toLowerCase().includes('from')) {
-        destination.price = priceText;
-      }
-    }
-    
-    if (cells.length >= 5) {
-      const buttonCell = cells[3];
-      const link = buttonCell.querySelector('a');
-      if (link) {
-        destination.button = {
-          text: link.textContent.trim() || 'Learn More',
-          href: link.href
-        };
-      }
-    }
-    
-    // Check for badges
-    const badgeIndicators = ['popular', 'featured', 'new', 'hot'];
+    // Extract badge indicators
+    const badgeRegex = /\[(popular|featured|new|hot)\]/i;
     const textContent = contentCell.textContent.toLowerCase();
-    for (const indicator of badgeIndicators) {
-      if (textContent.includes(`[${indicator}]`)) {
-        destination.badge = indicator.charAt(0).toUpperCase() + indicator.slice(1);
-        break;
-      }
+    const badgeMatch = textContent.match(badgeRegex);
+    if (badgeMatch) {
+      destination.badge = badgeMatch[1].charAt(0).toUpperCase() + badgeMatch[1].slice(1);
+    }
+    
+    // Extract price (text containing currency or "from")
+    const priceRegex = /(from\s+)?([a-z]{3}\s*[\d,]+|[\$£€]\s*[\d,]+)/i;
+    const priceMatch = contentCell.textContent.match(priceRegex);
+    if (priceMatch) {
+      destination.price = priceMatch[0].trim();
+    }
+    
+    // Extract button/link
+    const linkElement = contentCell.querySelector('a');
+    if (linkElement) {
+      destination.button = {
+        text: linkElement.textContent.trim() || 'Learn More',
+        href: linkElement.href
+      };
     }
     
     // Check for featured status
-    if (textContent.includes('[featured]') || cells.length > 5) {
+    if (textContent.includes('[featured]') || cells.length > 2) {
       destination.featured = true;
     }
   }
@@ -203,43 +203,112 @@ function createDestinationCard(data) {
   return card;
 }
 
-export default function decorate(block) {
-  const content = block.querySelector('div');
-  
-  if (!content) return;
+// Create default destinations when no content is available
+function createDefaultDestinations() {
+  return [
+    {
+      title: 'Thailand',
+      subtitle: 'Bangkok & Phuket',
+      description: 'Discover the land of smiles with pristine beaches, vibrant culture, and world-renowned cuisine.',
+      features: ['Direct flights', 'Tropical weather', 'World-class cuisine'],
+      price: 'AED 2,299',
+      button: { text: 'Explore Thailand', href: '/destinations/thailand' },
+      badge: 'Popular',
+      image: { 
+        src: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%234a90e2"/%3E%3Ctext x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white"%3EThailand%3C/text%3E%3C/svg%3E',
+        alt: 'Thailand destination'
+      }
+    },
+    {
+      title: 'Seychelles',
+      subtitle: 'Mahé Island',
+      description: 'Paradise found in the Indian Ocean with crystal clear waters and pristine beaches.',
+      features: ['Luxury resorts', 'Private beaches', 'Pristine nature'],
+      price: 'AED 3,999',
+      button: { text: 'Discover Seychelles', href: '/destinations/seychelles' },
+      image: { 
+        src: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%2350c9c3"/%3E%3Ctext x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white"%3ESeychelles%3C/text%3E%3C/svg%3E',
+        alt: 'Seychelles destination'
+      }
+    },
+    {
+      title: 'Mauritius',
+      subtitle: 'Port Louis',
+      description: 'A tropical paradise offering luxury, natural beauty, and warm hospitality.',
+      features: ['Golf courses', 'Water sports', 'Luxury spas'],
+      price: 'AED 3,299',
+      button: { text: 'Visit Mauritius', href: '/destinations/mauritius' },
+      image: { 
+        src: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%2378c257"/%3E%3Ctext x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white"%3EMauritius%3C/text%3E%3C/svg%3E',
+        alt: 'Mauritius destination'
+      }
+    },
+    {
+      title: 'Australia',
+      subtitle: 'Sydney & Melbourne',
+      description: 'Experience the best of Down Under with world-class cities and unique wildlife.',
+      features: ['Multiple cities', 'Adventure tours', 'Wildlife experiences'],
+      price: 'AED 4,599',
+      button: { text: 'Explore Australia', href: '/destinations/australia' },
+      featured: true,
+      image: { 
+        src: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23e74c3c"/%3E%3Ctext x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white"%3EAustralia%3C/text%3E%3C/svg%3E',
+        alt: 'Australia destination'
+      }
+    }
+  ];
+}
 
-  // Get the title (first element that's not a table/row)
+export default function decorate(block) {
+  const rows = [...block.children];
+  
+  // Clear existing content
+  block.innerHTML = '';
+  
+  // Extract title if present
   let title = '';
-  const titleElement = content.querySelector('h2, h1');
-  if (titleElement) {
-    title = titleElement.textContent;
-    titleElement.remove();
+  let titleElement = null;
+  
+  // Look for title in first row if it's a single cell
+  if (rows.length > 0 && rows[0].children.length === 1) {
+    const firstRow = rows[0];
+    const firstCell = firstRow.children[0];
+    const headingElement = firstCell.querySelector('h1, h2, h3');
+    
+    if (headingElement) {
+      title = headingElement.textContent.trim();
+      titleElement = headingElement;
+      rows.shift(); // Remove title row from processing
+    } else if (firstCell.textContent.trim() && !firstCell.querySelector('img')) {
+      title = firstCell.textContent.trim();
+      rows.shift(); // Remove title row from processing
+    }
   }
   
-  // Parse destination data from rows
-  const rows = [...content.children];
+  // Parse destination data from remaining rows
   const destinations = [];
   
   rows.forEach(row => {
-    const data = parseDestinationData(row);
-    if (data.title || data.image) {
-      destinations.push(data);
+    if (row.children.length >= 2) {
+      const data = parseDestinationData(row);
+      if (data.title || data.image) {
+        destinations.push(data);
+      }
     }
   });
   
-  // Clear content and rebuild
-  content.innerHTML = '';
+  // Use default destinations if none found
+  const finalDestinations = destinations.length > 0 ? destinations : createDefaultDestinations();
   
-  // Add title if present
+  // Add title
   if (title) {
     const h2 = document.createElement('h2');
     h2.textContent = title;
-    content.appendChild(h2);
+    block.appendChild(h2);
   } else {
-    // Add default title
     const h2 = document.createElement('h2');
     h2.textContent = 'Winter Sun Destinations';
-    content.appendChild(h2);
+    block.appendChild(h2);
   }
   
   // Create grid container
@@ -247,64 +316,19 @@ export default function decorate(block) {
   gridContainer.className = 'grid-container';
   
   // Add destination cards
-  destinations.forEach(data => {
+  finalDestinations.forEach(data => {
     const card = createDestinationCard(data);
     gridContainer.appendChild(card);
   });
   
-  // If no destinations found, create some defaults
-  if (destinations.length === 0) {
-    const defaultDestinations = [
-      {
-        title: 'Thailand',
-        subtitle: 'Bangkok & Phuket',
-        description: 'Discover the land of smiles with pristine beaches and vibrant culture.',
-        features: ['Direct flights', 'Tropical weather', 'World-class cuisine'],
-        price: 'AED 2,299',
-        button: { text: 'Explore Thailand', href: '#' },
-        badge: 'Popular'
-      },
-      {
-        title: 'Seychelles',
-        subtitle: 'Mahé Island',
-        description: 'Paradise found in the Indian Ocean with crystal clear waters.',
-        features: ['Luxury resorts', 'Private beaches', 'Pristine nature'],
-        price: 'AED 3,999',
-        button: { text: 'Discover Seychelles', href: '#' }
-      },
-      {
-        title: 'Mauritius',
-        subtitle: 'Port Louis',
-        description: 'A tropical paradise offering luxury and natural beauty.',
-        features: ['Golf courses', 'Water sports', 'Luxury spas'],
-        price: 'AED 3,299',
-        button: { text: 'Visit Mauritius', href: '#' }
-      },
-      {
-        title: 'Australia',
-        subtitle: 'Sydney & Melbourne',
-        description: 'Experience the best of Down Under with world-class cities.',
-        features: ['Multiple cities', 'Adventure tours', 'Wildlife experiences'],
-        price: 'AED 4,599',
-        button: { text: 'Explore Australia', href: '#' },
-        featured: true
-      }
-    ];
-    
-    defaultDestinations.forEach(data => {
-      const card = createDestinationCard(data);
-      gridContainer.appendChild(card);
-    });
-  }
-  
-  content.appendChild(gridContainer);
+  block.appendChild(gridContainer);
   
   // Add structured data for SEO
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     'name': 'Emirates Winter Sun Destinations',
-    'itemListElement': destinations.map((dest, index) => ({
+    'itemListElement': finalDestinations.map((dest, index) => ({
       '@type': 'TouristDestination',
       'position': index + 1,
       'name': dest.title,
@@ -315,7 +339,12 @@ export default function decorate(block) {
   const script = document.createElement('script');
   script.type = 'application/ld+json';
   script.textContent = JSON.stringify(structuredData);
-  document.head.appendChild(script);
+  
+  // Only add if not already present
+  if (!document.head.querySelector('script[type="application/ld+json"][data-destinations]')) {
+    script.setAttribute('data-destinations', 'true');
+    document.head.appendChild(script);
+  }
   
   // Initialize scroll animation
   observeElement(block);
