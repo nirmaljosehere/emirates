@@ -26,7 +26,7 @@
   --link-hover-color: var(--emirates-dark-blue);
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
+  --body-font-family: HelveticaNeue-Light,Helvetica,Arial,sans-serif;
   --heading-font-family: emirates, roboto-condensed, roboto-condensed-fallback, sans-serif;
   --emirates-font-family: emirates, sans-serif;
 
@@ -44,7 +44,7 @@
   --heading-font-size-xs: 22px;
 
   /* nav height */
-  --nav-height: 64px;
+  --nav-height: 50px;
 }
 
 /* fallback fonts */
@@ -125,6 +125,34 @@ h3 { font-size: var(--heading-font-size-l); }
 h4 { font-size: var(--heading-font-size-m); }
 h5 { font-size: var(--heading-font-size-s); }
 h6 { font-size: var(--heading-font-size-xs); }
+
+/* Title alignment styles */
+h1.left,
+h2.left,
+h3.left,
+h4.left,
+h5.left,
+h6.left {
+  text-align: left;
+}
+
+h1.center,
+h2.center,
+h3.center,
+h4.center,
+h5.center,
+h6.center {
+  text-align: center;
+}
+
+h1.right,
+h2.right,
+h3.right,
+h4.right,
+h5.right,
+h6.right {
+  text-align: right;
+}
 
 p,
 dl,

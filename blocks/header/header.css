@@ -1,10 +1,13 @@
 /* header and nav layout */
 header .nav-wrapper {
-  background-color: white;
+  background-color: #f9f9f9;
+  box-shadow: 0 1px 0 0 hsla(0,0%,40%,.5);
   color:black;
+  border-bottom: 1px solid hsla(0,0%,40%,.5);
   width: 100%;
   z-index: 2;
   position: fixed;
+  color: #333;
 }
 
 header nav#nav {
@@ -150,8 +153,8 @@ header .nav-brand {
 }
 
 header nav#nav .nav-brand img {
-  width: 102px;
-  height: 64px;
+  width: 100px;
+  height: 50px;
 }
 
 /* sections */
@@ -214,7 +217,7 @@ header nav#nav .nav-sections ul > li > ul > li {
     display: inline-block;
     position: absolute;
     top: 2px;
-    right: 2px;
+    right: 0px;
     transform: rotate(135deg);
     width: 6px;
     height: 6px;
@@ -233,7 +236,7 @@ header nav#nav .nav-sections ul > li > ul > li {
     display: flex;
     gap: 2em;
     margin: 0;
-    font-size: var(--body-font-size-m);
+    font-size: var(--body-font-size-s);
   }
 
   header nav#nav .nav-sections .default-content-wrapper > ul > li {
@@ -256,7 +259,6 @@ header nav#nav .nav-sections ul > li > ul > li {
     padding: 1em;
     background-color: var(--light-color);
     white-space: initial;
-    color: #006a4d;
   }
 
   header nav#nav .nav-sections .default-content-wrapper > ul > li > ul::before {
