@@ -32,6 +32,53 @@ export function moveAttributes(from, to, attributes) {
 }
 
 /**
+ * Decorates title components with alignment classes based on Universal Editor configuration
+ * @param {Element} container The container element to search for titles
+ */
+export function decorateTitles(container) {
+  // Find all title components in the container
+  const titleComponents = container.querySelectorAll('[data-aue-model="title"]');
+  
+  titleComponents.forEach((titleComponent) => {
+    // Get the alignment value from the data attributes
+    const alignment = titleComponent.getAttribute('data-aue-prop-alignment') || 
+                     titleComponent.getAttribute('data-alignment');
+    
+    // Find the actual heading element within the title component
+    const headingElement = titleComponent.querySelector('h1, h2, h3, h4, h5, h6');
+    
+    if (headingElement && alignment) {
+      // Remove any existing alignment classes
+      headingElement.classList.remove('left', 'center', 'right');
+      
+      // Add the new alignment class
+      if (['left', 'center', 'right'].includes(alignment)) {
+        headingElement.classList.add(alignment);
+      }
+    }
+  });
+  
+  // Also handle titles that might not have the model attribute but have alignment data
+  const allHeadings = container.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  
+  allHeadings.forEach((heading) => {
+    const titleContainer = heading.closest('[data-aue-resource]');
+    if (titleContainer) {
+      const alignment = titleContainer.getAttribute('data-aue-prop-alignment') ||
+                       titleContainer.getAttribute('data-alignment');
+      
+      if (alignment && ['left', 'center', 'right'].includes(alignment)) {
+        // Remove any existing alignment classes
+        heading.classList.remove('left', 'center', 'right');
+        
+        // Add the new alignment class
+        heading.classList.add(alignment);
+      }
+    }
+  });
+}
+
+/**
  * Move instrumentation attributes from a given element to another given element.
  * @param {Element} from the element to copy attributes from
  * @param {Element} to the element to copy attributes to
@@ -83,6 +130,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateTitles(main);
 }
 
 /**
