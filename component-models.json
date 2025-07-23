@@ -196,14 +196,7 @@
         "component": "reference",
         "valueType": "string",
         "name": "image",
-        "label": "Desktop Image",
-        "multi": false
-      },
-      {
-        "component": "reference",
-        "valueType": "string",
-        "name": "mobileImage",
-        "label": "Mobile Image (for screens below 968px)",
+        "label": "Hero Image",
         "multi": false
       },
       {
@@ -218,7 +211,15 @@
         "name": "text",
         "value": "",
         "label": "Text"
-      } 
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "mobileImage",
+        "label": "Mobile Image (optional - for screens below 968px)",
+        "multi": false,
+        "description": "Optional mobile-optimized image for better mobile display"
+      }
     ]
   },
 

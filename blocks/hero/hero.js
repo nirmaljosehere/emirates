@@ -11,7 +11,7 @@ export default function decorate(block) {
   }
 
   // Extract content from the block
-  let desktopImage = null;
+  let heroImage = null;
   let mobileImage = null;
   let content = [];
 
@@ -19,15 +19,15 @@ export default function decorate(block) {
   rows.forEach(row => {
     const cells = [...row.children];
     
-    // Look for images in the first few cells
+    // Look for images in the cells
     cells.forEach((cell, index) => {
       const img = cell.querySelector('img');
       if (img) {
-        if (index === 0 || (!desktopImage && !mobileImage)) {
-          // First image or first image found becomes desktop image
-          desktopImage = img.cloneNode(true);
-        } else if (index === 1 || !mobileImage) {
-          // Second image becomes mobile image
+        if (!heroImage) {
+          // First image becomes hero image
+          heroImage = img.cloneNode(true);
+        } else if (!mobileImage) {
+          // Second image becomes mobile image (if present)
           mobileImage = img.cloneNode(true);
         }
       }
@@ -56,34 +56,21 @@ export default function decorate(block) {
   // Clear the block
   block.innerHTML = '';
 
-  // Create picture element for desktop image
-  if (desktopImage) {
-    const desktopPicture = document.createElement('picture');
-    desktopPicture.className = 'hero-desktop-image';
+  // Create hero image - always create this as the main image
+  if (heroImage) {
+    const heroPicture = document.createElement('picture');
+    heroPicture.className = 'hero-desktop-image';
     
-    // Add responsive behavior if mobile image exists
-    if (mobileImage) {
-      const source = document.createElement('source');
-      source.media = '(min-width: 968px)';
-      source.srcset = desktopImage.src;
-      desktopPicture.appendChild(source);
-    }
-    
-    const img = desktopImage.cloneNode(true);
+    const img = heroImage.cloneNode(true);
     img.loading = 'eager'; // Hero images should load immediately
-    desktopPicture.appendChild(img);
-    block.appendChild(desktopPicture);
+    heroPicture.appendChild(img);
+    block.appendChild(heroPicture);
   }
 
-  // Create picture element for mobile image
+  // Create mobile image only if provided
   if (mobileImage) {
     const mobilePicture = document.createElement('picture');
     mobilePicture.className = 'hero-mobile-image';
-    
-    const source = document.createElement('source');
-    source.media = '(max-width: 967px)';
-    source.srcset = mobileImage.src;
-    mobilePicture.appendChild(source);
     
     const img = mobileImage.cloneNode(true);
     img.loading = 'eager'; // Hero images should load immediately
@@ -129,13 +116,15 @@ export default function decorate(block) {
     observer.observe(block);
   }
 
-  // Handle responsive image switching with JavaScript fallback
+  // Handle responsive image switching - only if mobile image exists
   function handleResponsiveImages() {
-    const isDesktop = window.matchMedia('(min-width: 968px)').matches;
     const desktopImg = block.querySelector('.hero-desktop-image');
     const mobileImg = block.querySelector('.hero-mobile-image');
 
+    // Only apply responsive logic if both images exist
     if (desktopImg && mobileImg) {
+      const isDesktop = window.matchMedia('(min-width: 968px)').matches;
+      
       if (isDesktop) {
         desktopImg.style.display = 'block';
         mobileImg.style.display = 'none';
@@ -144,16 +133,19 @@ export default function decorate(block) {
         mobileImg.style.display = 'block';
       }
     }
+    // If only hero image exists, it will be shown on all devices via CSS
   }
 
-  // Initialize responsive images
-  handleResponsiveImages();
+  // Initialize responsive images only if mobile image exists
+  if (mobileImage) {
+    handleResponsiveImages();
 
-  // Listen for resize events
-  window.addEventListener('resize', handleResponsiveImages);
-  
-  // Listen for orientation changes on mobile
-  window.addEventListener('orientationchange', () => {
-    setTimeout(handleResponsiveImages, 100);
-  });
+    // Listen for resize events
+    window.addEventListener('resize', handleResponsiveImages);
+    
+    // Listen for orientation changes on mobile
+    window.addEventListener('orientationchange', () => {
+      setTimeout(handleResponsiveImages, 100);
+    });
+  }
 }
