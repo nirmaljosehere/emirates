@@ -1,39 +1,40 @@
 /* stylelint-disable no-descending-specificity */
 .teaser {
     display: grid;
-    grid-template-areas: "teaser";
-    align-items: end;
-    justify-items: start;
-    position: relative;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "image content";
+    align-items: center;
+    gap: 0;
+    min-height: 500px;
 }
 
 .teaser > div {
-    grid-area: teaser;
+    height: 100%;
 }
 
 /* teaser image */
 .teaser > div:first-child {
+    grid-area: image;
     width: 100%;
+    height: 100%;
 }
 
 .teaser > div:first-child > div {
-    height: 40pc;
-    max-height: 40pc;
+    height: 500px;
     width: 100%;
 }
 
 /* teaser content */
 .teaser > div:last-child {
-    width: 50%;
-    max-width: 600px;
+    grid-area: content;
     background-color: #fff;
-    min-height: 280px;
-    padding: 40px;
+    padding: 60px;
     font-size: 18px;
-    margin: 0 0 0 40px;
     line-height: 1.75;
-    z-index: 1;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .teaser picture {
@@ -48,15 +49,15 @@
     object-position: center;
     width: 100%;
     height: 100%;
-    max-height: 640px;
 }
 
 .teaser h2 {
     font-family: var(--body-font-family);
-    margin: .5em 0;
+    margin: 0 0 1em 0;
     font-size: 2.5rem;
     font-weight: bold;
     line-height: 1.2;
+    color: #202020;
 }
 
 .teaser h2 a {
@@ -65,13 +66,13 @@
 }
 
 .teaser p {
-    margin: 1.5em 0;
+    margin: 0 0 1.5em 0;
     color: #555;
     line-height: 1.6;
 }
 
 .teaser .button-container {
-    margin-top: 2em;
+    margin-top: auto;
 }
 
 .teaser .button-container a {
@@ -93,21 +94,23 @@
 @media (max-width: 768px) {
     .teaser {
         display: block;
-        position: static;
+        grid-template-columns: none;
+        grid-template-areas: none;
+        min-height: auto;
     }
     
     .teaser > div:first-child > div {
         height: 300px;
-        max-height: 300px;
     }
     
     .teaser > div:last-child {
         width: calc(100% - 48px);
-        max-width: none;
         margin: -80px 24px 24px 24px;
         padding: 32px;
         position: relative;
         z-index: 1;
+        height: auto;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
     
     .teaser h2 {
@@ -115,6 +118,6 @@
     }
     
     .teaser img {
-        max-height: 300px;
+        height: 300px;
     }
 }
