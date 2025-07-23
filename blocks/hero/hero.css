@@ -59,7 +59,7 @@ main .hero-container {
   max-width: 1200px;
   margin: 0 auto;
   color: white;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-size: 4rem;
   font-family: var(--emirates-font-family, 'emirates', 'roboto', sans-serif);
   font-weight: 600;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -155,7 +155,7 @@ main .hero-container {
   }
   
   .hero h1 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-size: 4rem;
   }
   
   .hero h2 {
@@ -163,7 +163,7 @@ main .hero-container {
   }
   
   .hero p {
-    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-size: 4rem;
   }
 }
 
@@ -187,6 +187,6 @@ main .hero-container {
   }
   
   .hero p {
-    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-size: 4rem;
   }
 }
