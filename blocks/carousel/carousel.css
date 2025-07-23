@@ -27,6 +27,26 @@
   overflow: hidden;
 }
 
+/* Emirates carousel mobile adjustments */
+@media (max-width: 967px) {
+  .carousel.emirates-carousel .carousel-container {
+    height: auto;
+    min-height: 450px;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel.emirates-carousel .carousel-container {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel.emirates-carousel .carousel-container {
+    min-height: 350px;
+  }
+}
+
 .carousel .carousel-container {
   position: relative;
   width: 100%;
@@ -42,6 +62,14 @@
   height: 100%;
   transition: transform 0.5s ease-in-out;
   touch-action: pan-y;
+}
+
+/* Mobile wrapper adjustments */
+@media (max-width: 967px) {
+  .carousel .carousel-wrapper {
+    height: auto;
+    min-height: 100%;
+  }
 }
 
 .carousel .carousel-slide {
@@ -300,10 +328,66 @@
   transition: none;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Mobile responsive layout - stack content below image */
+@media (max-width: 967px) {
   .carousel .carousel-container {
-    height: 300px;
+    height: auto; /* Allow dynamic height for stacked content */
+    min-height: 400px;
+  }
+
+  /* Mobile slide layout - stack content below image */
+  .carousel .emirates-slide.image-slide {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .carousel .emirates-slide.image-slide img {
+    width: 100%;
+    height: 250px; /* Fixed height for mobile images */
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  /* Reposition slide content below image */
+  .carousel .emirates-slide .slide-content.overlay {
+    position: static !important; /* Override absolute positioning */
+    background: white;
+    color: var(--text-color);
+    padding: 20px;
+    margin: 0;
+    max-width: 100%;
+    transform: none;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    top: auto;
+    border-top: 1px solid #eee; /* Subtle separation from image */
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* Slight elevation effect */
+  }
+
+  /* Reset text positioning classes for mobile */
+  .carousel .emirates-slide.text-center .slide-content,
+  .carousel .emirates-slide .slide-content.text-center,
+  .carousel .emirates-slide.text-left .slide-content,
+  .carousel .emirates-slide .slide-content.text-left,
+  .carousel .emirates-slide.text-right .slide-content,
+  .carousel .emirates-slide .slide-content.text-right,
+  .carousel .emirates-slide.text-bottom .slide-content,
+  .carousel .emirates-slide .slide-content.text-bottom {
+    position: static !important;
+    background: white;
+    color: var(--text-color);
+    padding: 20px;
+    margin: 0;
+    max-width: 100%;
+    transform: none;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    top: auto;
+    text-align: left;
+    border-top: 1px solid #eee;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .carousel .carousel-nav {
@@ -320,10 +404,6 @@
     right: 10px;
   }
 
-  .carousel .carousel-slide .slide-content {
-    padding: 30px 15px 15px;
-  }
-
   .carousel .carousel-slide .slide-content h2 {
     font-size: 1.25rem;
   }
@@ -338,18 +418,41 @@
   }
 }
 
+/* Tablet responsive (768px and below) */
+@media (max-width: 768px) {
+  .carousel .carousel-container {
+    min-height: 350px;
+  }
+
+  .carousel .emirates-slide.image-slide img {
+    height: 220px;
+  }
+
+  .carousel .emirates-slide .slide-content.overlay {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
 @media (max-width: 480px) {
   .carousel .carousel-container {
-    height: 250px;
+    min-height: 300px;
     border-radius: 4px;
+  }
+
+  .carousel .emirates-slide.image-slide img {
+    height: 180px; /* Smaller image height for very small screens */
   }
 
   .carousel .carousel-nav {
     display: none; /* Hide arrows on very small screens */
   }
 
-  .carousel .carousel-slide .slide-content {
-    padding: 20px 10px 10px;
+  .carousel .emirates-slide .slide-content.overlay {
+    padding: 15px 10px;
+    border-top: 1px solid #eee;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .carousel .carousel-slide .slide-content h2 {
