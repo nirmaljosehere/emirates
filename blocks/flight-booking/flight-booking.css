@@ -46,13 +46,22 @@
   color: #333;
 }
 
+.flight-booking .booking-tab:hover::before {
+  filter: grayscale(0) contrast(1) brightness(1);
+  transition: filter 0.3s ease;
+}
+
 .flight-booking .booking-tab::before {
   content: '✈️';
   margin-right: 8px;
+  filter: grayscale(1) contrast(1.2) brightness(0.8);
+  transition: filter 0.3s ease;
 }
 
 .flight-booking .booking-tab:last-child::before {
   content: '🏨';
+  filter: grayscale(1) contrast(1.2) brightness(0.8);
+  transition: filter 0.3s ease;
 }
 
 /* Booking form */
@@ -98,7 +107,7 @@
 }
 
 .flight-booking .field-input {
-  width: 100%;
+  width: 85%;
   padding: 16px;
   border: 2px solid #e0e0e0;
   border-radius: 6px;
@@ -124,6 +133,7 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
+  filter: grayscale(1) contrast(1.2) brightness(0.8);
 }
 
 .flight-booking .departure-field .field-input {
@@ -165,6 +175,7 @@
   width: 100%;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-bottom: 4px;
 }
 
 .flight-booking .continue-button:hover {
@@ -199,11 +210,18 @@
   transform: translateY(-2px);
 }
 
+.flight-booking .service-item:hover .service-icon {
+  filter: grayscale(0) contrast(1) brightness(1);
+  transition: filter 0.3s ease;
+}
+
 .flight-booking .service-icon {
   font-size: 32px;
   margin-bottom: 12px;
   display: block;
   color: #666;
+  filter: grayscale(1) contrast(1.2) brightness(0.8);
+  transition: filter 0.3s ease;
 }
 
 .flight-booking .service-title {
@@ -220,6 +238,7 @@
   right: 8px;
   font-size: 12px;
   color: #999;
+  filter: grayscale(1) contrast(1.2) brightness(0.8);
 }
 
 /* Mobile responsive */
