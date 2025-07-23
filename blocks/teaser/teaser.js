@@ -4,55 +4,63 @@ import { readBlockConfig } from '../../scripts/aem.js';
  * @param {HTMLElement} block
  */
 export default function decorate(block) {
-  // Debug: Log the block structure
-  console.log('Teaser block structure:', block);
-  console.log('Block children:', [...block.children]);
-  
-  // Read teaser configuration
+  // Read teaser configuration (though it might be empty due to Universal Editor structure)
   const config = readBlockConfig(block);
-  console.log('Config object:', config);
   
-  // Configuration settings with defaults
-  const settings = {
-    layout: config['layout-direction'] || 'image-left',
-  };
-  console.log('Settings:', settings);
-
-  // Debug: Check each row
+  // Look for layout configuration in single-cell rows
+  let layoutConfig = 'image-left'; // default
+  
   const allRows = [...block.children];
   allRows.forEach((row, index) => {
     const cells = [...row.children];
-    console.log(`Row ${index}:`, {
-      cellCount: cells.length,
-      cell0Text: cells[0]?.textContent?.trim(),
-      cell1Text: cells[1]?.textContent?.trim(),
-      rowHTML: row.outerHTML
-    });
+    if (cells.length === 1) {
+      const cellText = cells[0].textContent.trim();
+      // Check if this cell contains a layout configuration value
+      if (cellText === 'image-left' || cellText === 'content-left') {
+        layoutConfig = cellText;
+        console.log(`Found layout config in row ${index}:`, cellText);
+      }
+    }
   });
+
+  // Configuration settings
+  const settings = {
+    layout: config['layout-direction'] || layoutConfig,
+  };
+  
+  console.log('Final settings:', settings);
 
   // Filter out configuration rows and get content rows
   const contentRows = allRows.filter(row => {
     const cells = [...row.children];
+    
+    // Filter out single-cell configuration rows
+    if (cells.length === 1) {
+      const cellText = cells[0].textContent.trim();
+      if (cellText === 'image-left' || cellText === 'content-left') {
+        console.log('Excluding configuration row:', cellText);
+        return false; // Exclude configuration values
+      }
+    }
+    
+    // Filter out traditional 2-cell configuration rows (just in case)
     if (cells.length === 2) {
       const key = cells[0].textContent.trim().toLowerCase();
       const value = cells[1].textContent.trim().toLowerCase();
       
-      console.log(`Checking row: key="${key}", value="${value}"`);
-      
-      // Configuration keys and values to exclude
       const configKeys = ['layout direction', 'layout-direction'];
-      const configValues = ['image-left', 'content-left', 'image left, content right', 'content left, image right'];
+      const configValues = ['image-left', 'content-left'];
       
       if (configKeys.includes(key) || configValues.includes(value)) {
-        console.log('Excluding configuration row:', key, value);
-        return false; // Exclude configuration rows
+        console.log('Excluding traditional config row:', key, value);
+        return false;
       }
     }
-    console.log('Including content row');
+    
     return true; // Include content rows
   });
 
-  console.log('Content rows after filtering:', contentRows);
+  console.log('Content rows after filtering:', contentRows.length);
 
   // Extract image and content from content rows
   let imageElement = null;
@@ -64,14 +72,13 @@ export default function decorate(block) {
       const img = cell.querySelector('img');
       if (img && !imageElement) {
         imageElement = img;
+        console.log('Found image element');
       } else if (cell.textContent.trim() || cell.querySelector('*:not(img)')) {
         contentElements.push(cell);
+        console.log('Found content element');
       }
     });
   });
-
-  console.log('Image element:', imageElement);
-  console.log('Content elements:', contentElements);
 
   // Clear block and create new structure
   block.innerHTML = '';
