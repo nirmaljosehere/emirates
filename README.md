@@ -28,24 +28,6 @@ This website clone replicates the Emirates winter-sun destination page (https://
    - Call-to-action buttons
    - Responsive design
 
-2. **Destination Highlight** (`/blocks/destination-highlight/`)
-   - Split-screen layout with image and content
-   - Reversible layout direction
-   - Feature lists with Emirates styling
-   - Primary and secondary CTAs
-
-3. **Destinations Grid** (`/blocks/destinations-grid/`)
-   - Responsive card grid layout
-   - Featured destination support
-   - Badge system (Popular, Featured, New)
-   - Price display and booking CTAs
-
-4. **FAQ Section** (`/blocks/faq/`)
-   - Expandable accordion interface
-   - Keyboard navigation support
-   - ARIA accessibility attributes
-   - Smooth animations
-
 ### Updated Components
 
 - **Header**: Emirates red branding, responsive navigation
@@ -88,18 +70,6 @@ emirates/
 │   │   ├── hero.css
 │   │   ├── hero.js
 │   │   └── _hero.json
-│   ├── destination-highlight/   # Destination showcase
-│   │   ├── destination-highlight.css
-│   │   ├── destination-highlight.js
-│   │   └── _destination-highlight.json
-│   ├── destinations-grid/       # Grid of destinations
-│   │   ├── destinations-grid.css
-│   │   ├── destinations-grid.js
-│   │   └── _destinations-grid.json
-│   ├── faq/                     # FAQ accordion
-│   │   ├── faq.css
-│   │   ├── faq.js
-│   │   └── _faq.json
 │   └── header/                  # Emirates header
 │       ├── header.css
 │       └── header.js

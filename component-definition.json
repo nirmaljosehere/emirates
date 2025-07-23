@@ -96,51 +96,6 @@
               }
             }
           }
-        },
-        {
-          "title": "Destination Highlight",
-          "id": "destination-highlight",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block",
-                "template": {
-                  "name": "Destination Highlight",
-                  "model": "destination-highlight"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Destinations Grid",
-          "id": "destinations-grid",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block",
-                "template": {
-                  "name": "Destinations Grid",
-                  "model": "destinations-grid"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "FAQ Section",
-          "id": "faq",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block",
-                "template": {
-                  "name": "FAQ",
-                  "model": "faq"
-                }
-              }
-            }
-          }
         }
       ]
     },
@@ -205,21 +160,6 @@
                   "name": "Carousel",
                   "model": "carousel",
                   "filter": "carousel"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Blockquote",
-          "id": "blockquote",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block",
-                "template": {
-                  "name": "Blockquote",
-                  "model": "blockquote"
                 }
               }
             }
@@ -296,14 +236,10 @@
         "image",
         "button",
         "emirates-hero",
-        "destination-highlight",
-        "destinations-grid",
-        "faq",
         "cards",
         "columns",
         "fragment",
-        "carousel",
-        "blockquote"
+        "carousel"
       ]
     }
   ]
