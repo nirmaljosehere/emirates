@@ -343,7 +343,6 @@
 
   .carousel .emirates-slide.image-slide img {
     width: 100%;
-    height: 250px; /* Fixed height for mobile images */
     object-fit: cover;
     flex-shrink: 0;
   }
@@ -422,10 +421,6 @@
 @media (max-width: 768px) {
   .carousel .carousel-container {
     min-height: 350px;
-  }
-
-  .carousel .emirates-slide.image-slide img {
-    height: 220px;
   }
 
   .carousel .emirates-slide .slide-content.overlay {
