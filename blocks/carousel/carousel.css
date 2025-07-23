@@ -9,7 +9,6 @@
 /* Emirates Carousel Theme */
 .carousel.emirates-carousel {
   background: var(--background-color);
-  font-family: emirates-bold, Arial, sans-serif;
 }
 
 .carousel.emirates-carousel .carousel-title {
@@ -23,7 +22,7 @@
 
 .carousel.emirates-carousel .carousel-container {
   border-radius: 12px;
-  height: 154vh;
+  height: 900px;
   overflow: hidden;
 }
 
