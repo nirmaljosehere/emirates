@@ -109,45 +109,29 @@ export default function decorate(block) {
       slideElement.appendChild(slide.firstChild);
     }
     
-    // Get text position from slide configuration
-    const slideConfig = readBlockConfig(slide);
-    const textPosition = slideConfig.textposition || slideConfig.textPosition || 'left'; // default to left
-    
-
-    
     // Apply Emirates styling and structure
     const img = slideElement.querySelector('img');
     if (!img) {
       // Text-only slide
       const content = document.createElement('div');
-      content.className = `slide-content emirates-content text-${textPosition}`;
+      content.className = 'slide-content';
       while (slideElement.firstChild) {
         content.appendChild(slideElement.firstChild);
       }
       slideElement.appendChild(content);
-      slideElement.classList.add('text-slide', `text-${textPosition}`);
+      slideElement.classList.add('text-slide');
     } else {
       // Image slide
-      slideElement.classList.add('image-slide', `text-${textPosition}`);
+      slideElement.classList.add('image-slide');
       img.setAttribute('loading', 'lazy');
       
       // Create content overlay for text content
-      const textElements = slideElement.querySelectorAll('h1, h2, h3, h4, h5, h6, p, ul, ol, .button-container');
+      const textElements = slideElement.querySelectorAll('h1, h2, h3, h4, h5, h6, p, ul, ol');
       if (textElements.length > 0) {
         const content = document.createElement('div');
-        content.className = `slide-content emirates-content overlay text-${textPosition}`;
+        content.className = 'slide-content overlay';
         
         textElements.forEach(el => {
-          // Add Emirates styling to text elements
-          if (el.tagName.match(/H[1-6]/)) {
-            el.classList.add('emirates-heading');
-          } else if (el.tagName === 'P') {
-            el.classList.add('emirates-text');
-          } else if (el.classList.contains('button-container')) {
-            el.classList.add('emirates-buttons');
-            const buttons = el.querySelectorAll('a, button');
-            buttons.forEach(btn => btn.classList.add('emirates-button'));
-          }
           content.appendChild(el);
         });
         

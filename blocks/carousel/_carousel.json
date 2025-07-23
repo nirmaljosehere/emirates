@@ -115,65 +115,10 @@
           "label": "Image Alt Text"
         },
         {
-          "component": "text",
-          "valueType": "string",
-          "name": "title",
-          "label": "Slide Title"
-        },
-        {
-          "component": "text",
-          "valueType": "string",
-          "name": "subtitle",
-          "label": "Slide Subtitle"
-        },
-        {
           "component": "richtext",
           "name": "description",
           "label": "Slide Description",
           "valueType": "string"
-        },
-        {
-          "component": "aem-content",
-          "name": "primaryLink",
-          "label": "Primary CTA Link"
-        },
-        {
-          "component": "text",
-          "name": "primaryText",
-          "label": "Primary CTA Text"
-        },
-        {
-          "component": "aem-content",
-          "name": "secondaryLink",
-          "label": "Secondary CTA Link"
-        },
-        {
-          "component": "text",
-          "name": "secondaryText",
-          "label": "Secondary CTA Text"
-        },
-        {
-          "component": "select",
-          "name": "textPosition",
-          "label": "Text Position",
-          "options": [
-            {
-              "name": "Center",
-              "value": "center"
-            },
-            {
-              "name": "Left",
-              "value": "left"
-            },
-            {
-              "name": "Right",
-              "value": "right"
-            },
-            {
-              "name": "Bottom",
-              "value": "bottom"
-            }
-          ]
         }
       ]
     }

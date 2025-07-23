@@ -107,81 +107,16 @@
   padding: 30px;
 }
 
-/* Text Position Variants */
-.carousel .emirates-slide.text-center .slide-content,
-.carousel .emirates-slide .slide-content.text-center {
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-  text-align: center;
-  max-width: 80%;
-}
-
-.carousel .emirates-slide.text-left .slide-content,
-.carousel .emirates-slide .slide-content.text-left {
-  left: 10%;
-  right: auto;
-  max-width: 30%;
-  text-align: left;
-}
-
-.carousel .emirates-slide.text-right .slide-content,
-.carousel .emirates-slide .slide-content.text-right {
+/* Default slide content positioning */
+.carousel .emirates-slide .slide-content {
+  position: absolute;
   right: 20px;
   left: auto;
   max-width: 60%;
-  text-align: right;
+  text-align: left;
 }
 
-.carousel .emirates-slide.text-bottom .slide-content,
-.carousel .emirates-slide .slide-content.text-bottom {
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  text-align: center;
-}
 
-.carousel .emirates-slide .emirates-content {
-  text-align: left
-}
-
-.carousel .emirates-slide .emirates-heading {
-  text-align: left
-}
-
-/* .carousel .emirates-slide .emirates-text {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-} */
-
-.carousel .emirates-slide .emirates-buttons {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.carousel .emirates-slide .emirates-button {
-  padding: 12px 24px;
-  border: 2px solid #dc143c;
-  background: #dc143c;
-  color: white;
-  text-decoration: none;
-  border-radius: 6px;
-  font-family: emirates-bold, Arial, sans-serif;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.carousel .emirates-slide .emirates-button:hover {
-  background: transparent;
-  color: #dc143c;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
-}
 
 .carousel .emirates-slide.text-slide .slide-content {
   position: static;
@@ -192,28 +127,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-/* Text-only slide positioning */
-.carousel .emirates-slide.text-slide.text-left .slide-content {
-  text-align: left;
-  align-items: flex-start;
-}
-
-.carousel .emirates-slide.text-slide.text-right .slide-content {
-  text-align: right;
-  align-items: flex-end;
-}
-
-.carousel .emirates-slide.text-slide.text-center .slide-content {
-  text-align: center;
-  align-items: center;
-}
-
-.carousel .emirates-slide.text-slide.text-bottom .slide-content {
-  justify-content: flex-end;
-  text-align: center;
-  align-items: center;
 }
 
 .carousel .carousel-slide .slide-content h2 {
@@ -364,15 +277,8 @@
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* Slight elevation effect */
   }
 
-  /* Reset text positioning classes for mobile */
-  .carousel .emirates-slide.text-center .slide-content,
-  .carousel .emirates-slide .slide-content.text-center,
-  .carousel .emirates-slide.text-left .slide-content,
-  .carousel .emirates-slide .slide-content.text-left,
-  .carousel .emirates-slide.text-right .slide-content,
-  .carousel .emirates-slide .slide-content.text-right,
-  .carousel .emirates-slide.text-bottom .slide-content,
-  .carousel .emirates-slide .slide-content.text-bottom {
+  /* Mobile slide content styling */
+  .carousel .emirates-slide .slide-content.overlay {
     position: static !important;
     background: white;
     color: var(--text-color);
