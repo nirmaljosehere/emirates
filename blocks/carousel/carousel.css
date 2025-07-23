@@ -9,6 +9,7 @@
 /* Emirates Carousel Theme */
 .carousel.emirates-carousel {
   background: var(--background-color);
+  padding-top: 30px;
 }
 
 .carousel.emirates-carousel .carousel-title {
