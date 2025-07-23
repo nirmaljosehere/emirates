@@ -110,13 +110,15 @@
 /* Default slide content positioning */
 .carousel .emirates-slide .slide-content {
   position: absolute;
-  right: 20px;
-  left: auto;
-  max-width: 60%;
+  right: auto;
+  left: 10%;
+  max-width: 30%;
   text-align: left;
 }
 
-
+.carousel .emirates-slide .slide-content h1, h2, h3, h4, h5, h6 {
+  text-align: left;
+}
 
 .carousel .emirates-slide.text-slide .slide-content {
   position: static;
