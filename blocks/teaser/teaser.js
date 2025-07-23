@@ -9,7 +9,7 @@ export default function decorate(block) {
   
   // Configuration settings with defaults
   const settings = {
-    layout: config.layout || 'image-left',
+    layout: config['layout-direction'] || 'image-left',
   };
 
   // Filter out configuration rows and get content rows
@@ -18,13 +18,20 @@ export default function decorate(block) {
     const cells = [...row.children];
     if (cells.length === 2) {
       const key = cells[0].textContent.trim().toLowerCase();
-      const configKeys = ['layout'];
-      return !configKeys.includes(key);
+      const value = cells[1].textContent.trim().toLowerCase();
+      
+      // Configuration keys and values to exclude
+      const configKeys = ['layout direction', 'layout-direction'];
+      const configValues = ['image-left', 'content-left'];
+      
+      if (configKeys.includes(key) || configValues.includes(value)) {
+        return false; // Exclude configuration rows
+      }
     }
-    return true;
+    return true; // Include content rows
   });
 
-  // Extract image and content from rows
+  // Extract image and content from content rows
   let imageElement = null;
   let contentElements = [];
 
