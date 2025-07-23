@@ -132,7 +132,6 @@
     
     .teaser-content {
         width: calc(100% - 48px);
-        margin: -80px 24px 24px 24px;
         padding: 32px;
         position: relative;
         z-index: 1;

@@ -344,10 +344,6 @@
     border-radius: 4px;
   }
 
-  .carousel .emirates-slide.image-slide img {
-    height: 180px; /* Smaller image height for very small screens */
-  }
-
   .carousel .carousel-nav {
     display: none; /* Hide arrows on very small screens */
   }
