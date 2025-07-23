@@ -28,6 +28,12 @@ This website clone replicates the Emirates winter-sun destination page (https://
    - Call-to-action buttons
    - Responsive design
 
+2. **Flight Booking Widget** (`/blocks/flight-booking/`)
+   - Emirates-branded flight search interface
+   - Configurable departure airport defaults
+   - Service links grid (hotels, car rentals, etc.)
+   - Dummy implementation for demonstration
+
 ### Updated Components
 
 - **Header**: Emirates red branding, responsive navigation

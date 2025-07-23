@@ -1,0 +1,311 @@
+/* Emirates Flight Booking Widget */
+.flight-booking {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 24px;
+  font-family: var(--body-font-family);
+}
+
+/* Main booking widget container */
+.flight-booking .booking-widget {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+/* Tab navigation */
+.flight-booking .booking-tabs {
+  display: flex;
+  background: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.flight-booking .booking-tab {
+  flex: 1;
+  padding: 16px 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.flight-booking .booking-tab.active {
+  background: white;
+  color: var(--emirates-red, #dc143c);
+  border-bottom: 3px solid var(--emirates-red, #dc143c);
+}
+
+.flight-booking .booking-tab:hover:not(.active) {
+  background: #eee;
+  color: #333;
+}
+
+.flight-booking .booking-tab::before {
+  content: '✈️';
+  margin-right: 8px;
+}
+
+.flight-booking .booking-tab:last-child::before {
+  content: '🏨';
+}
+
+/* Booking form */
+.flight-booking .booking-form {
+  padding: 24px;
+  background: white;
+}
+
+.flight-booking .advanced-search {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.flight-booking .advanced-search a {
+  color: var(--emirates-red, #dc143c);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.flight-booking .advanced-search a:hover {
+  text-decoration: underline;
+}
+
+/* Form fields container */
+.flight-booking .form-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr 200px;
+  gap: 16px;
+  align-items: end;
+}
+
+.flight-booking .field-group {
+  position: relative;
+}
+
+.flight-booking .field-label {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.flight-booking .field-input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 16px;
+  background: white;
+  transition: border-color 0.3s ease;
+}
+
+.flight-booking .field-input:focus {
+  outline: none;
+  border-color: var(--emirates-red, #dc143c);
+}
+
+.flight-booking .field-input::placeholder {
+  color: #999;
+}
+
+/* Location icon */
+.flight-booking .departure-field::before {
+  content: '📍';
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.flight-booking .departure-field .field-input {
+  padding-left: 45px;
+}
+
+/* Clear button */
+.flight-booking .clear-button {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.flight-booking .clear-button:hover {
+  background: #f0f0f0;
+  color: #666;
+}
+
+/* Continue button */
+.flight-booking .continue-button {
+  background: var(--emirates-red, #dc143c);
+  color: white;
+  border: none;
+  padding: 18px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.flight-booking .continue-button:hover {
+  background: #b91238;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+}
+
+/* Services grid */
+.flight-booking .services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  background: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.flight-booking .service-item {
+  background: white;
+  padding: 24px 16px;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.flight-booking .service-item:hover {
+  background: #f8f8f8;
+  transform: translateY(-2px);
+}
+
+.flight-booking .service-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  display: block;
+  color: #666;
+}
+
+.flight-booking .service-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #333;
+}
+
+.flight-booking .service-item .external-link::after {
+  content: '↗';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 12px;
+  color: #999;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .flight-booking {
+    padding: 0 16px;
+    margin: 20px auto;
+  }
+
+  .flight-booking .form-fields {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .flight-booking .booking-form {
+    padding: 20px 16px;
+  }
+
+  .flight-booking .booking-tab {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .flight-booking .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .flight-booking .service-item {
+    padding: 20px 12px;
+  }
+
+  .flight-booking .service-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .flight-booking .service-title {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .flight-booking .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .flight-booking .booking-tab::before {
+    display: none;
+  }
+
+  .flight-booking .field-input {
+    padding: 14px;
+  }
+
+  .flight-booking .continue-button {
+    padding: 16px 24px;
+    font-size: 15px;
+  }
+}
+
+/* Loading state */
+.flight-booking.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Accessibility improvements */
+.flight-booking .booking-tab:focus,
+.flight-booking .field-input:focus,
+.flight-booking .continue-button:focus,
+.flight-booking .service-item:focus {
+  outline: 2px solid var(--emirates-red, #dc143c);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .flight-booking .booking-widget {
+    border: 2px solid #000;
+  }
+
+  .flight-booking .field-input {
+    border-color: #000;
+  }
+
+  .flight-booking .continue-button {
+    background: #000;
+  }
+} 

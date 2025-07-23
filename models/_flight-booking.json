@@ -1,0 +1,25 @@
+{
+  "id": "flight-booking",
+  "fields": [
+    {
+      "component": "text",
+      "valueType": "string",
+      "name": "title",
+      "label": "Widget Title",
+      "value": "Book your flight"
+    },
+    {
+      "component": "text",
+      "valueType": "string",
+      "name": "departureAirport",
+      "label": "Default Departure Airport",
+      "value": "Birmingham (BHX)"
+    },
+    {
+      "component": "boolean",
+      "name": "showAdvancedSearch",
+      "label": "Show Advanced Search Link",
+      "value": true
+    }
+  ]
+} 
