@@ -671,6 +671,22 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "layout",
+        "label": "Layout Direction",
+        "options": [
+          {
+            "name": "Image Left, Content Right",
+            "value": "image-left"
+          },
+          {
+            "name": "Content Left, Image Right",
+            "value": "content-left"
+          }
+        ],
+        "value": "image-left"
       }
     ]
   }
