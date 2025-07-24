@@ -1,8 +1,7 @@
 {
   "mappings": [
-    "/content/emirates/france/en/:/test",
-    "/content/emirates/:/",
-    "/content/emirates/configuration:/.helix/config.json"
+    "/content/emirates/france/en:/test",
+    "/content/emirates:/"
   ],
   "includes": [
     "/content/emirates/"
