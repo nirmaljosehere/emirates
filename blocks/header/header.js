@@ -162,7 +162,9 @@ export default async function decorate(block) {
 
   console.log("navMeta>>>>>>>>>"+navMeta);
   console.log("navPath>>>>>>>>>"+navPath);
-  console.log(fragment);
+  console.log("fragment>>>>>>>>>", fragment);
+  console.log("fragment.children>>>>>>>>>", fragment?.children);
+  console.log("fragment.innerHTML>>>>>>>>>", fragment?.innerHTML);
 
   // decorate nav DOM
   const nav = document.createElement('nav');
