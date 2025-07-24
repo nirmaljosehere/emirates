@@ -169,7 +169,7 @@ export default async function decorate(block) {
   nav.id = 'nav';
   while (fragment.firstElementChild) nav.append(fragment.firstElementChild);
 
-  const classes = ['brand', 'sections', 'tools'];
+  const classes = ['brand', 'sections', 'tools', 'country'];
   classes.forEach((c, i) => {
     const section = nav.children[i];
     if (section) section.classList.add(`nav-${c}`);
@@ -200,6 +200,12 @@ export default async function decorate(block) {
     });
   }
 
+  // Process country section for country selector
+  const navCountry = nav.querySelector('.nav-country');
+  if (navCountry) {
+    setupCountrySelector(navCountry);
+  }
+
   // hamburger for mobile
   const hamburger = document.createElement('div');
   hamburger.classList.add('nav-hamburger');
@@ -221,4 +227,151 @@ export default async function decorate(block) {
   if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
     navWrapper.append(await buildBreadcrumbs());
   }
+
+}
+
+/**
+ * Setup country selector in country section
+ * @param {Element} navCountry The nav country section
+ */
+function setupCountrySelector(navCountry) {
+  // Find any ul in the country section (this will be the country list)
+  const countryList = navCountry.querySelector('ul');
+  if (!countryList) return;
+
+  // Create country selector button with icon
+  const countryButton = document.createElement('button');
+  countryButton.className = 'country-selector-button';
+  countryButton.setAttribute('aria-expanded', 'false');
+  countryButton.setAttribute('aria-haspopup', 'true');
+  countryButton.setAttribute('aria-label', 'Select country and language');
+  
+  countryButton.innerHTML = `
+    <img src="/icons/geo_language.svg" alt="Country & Language" class="country-icon">
+    <span class="country-arrow">▼</span>
+  `;
+
+  // Transform the ul into a dropdown
+  countryList.className = 'country-dropdown';
+  countryList.setAttribute('role', 'menu');
+  countryList.style.display = 'none';
+
+  // Process nested lists for countries with multiple languages
+  countryList.querySelectorAll('li').forEach(countryItem => {
+    const countryLink = countryItem.querySelector('a');
+    if (countryLink) {
+      countryLink.setAttribute('role', 'menuitem');
+    }
+
+    // Handle nested language lists
+    const languageList = countryItem.querySelector('ul');
+    if (languageList) {
+      countryItem.classList.add('has-languages');
+      languageList.querySelectorAll('a').forEach(langLink => {
+        langLink.setAttribute('role', 'menuitem');
+      });
+    }
+  });
+
+  // Create container and insert before the original list
+  const countrySelector = document.createElement('div');
+  countrySelector.className = 'country-selector';
+  countrySelector.appendChild(countryButton);
+  countrySelector.appendChild(countryList);
+
+  // Replace the original list with our enhanced selector
+  countryList.parentNode.replaceChild(countrySelector, countryList);
+
+  // Add interaction events
+  setupCountrySelectorEvents(countrySelector, countryButton, countryList);
+}
+
+/**
+ * Setup country selector interaction events
+ * @param {Element} countrySelector The country selector container
+ * @param {Element} countryButton The country button
+ * @param {Element} countryList The country dropdown list
+ */
+function setupCountrySelectorEvents(countrySelector, countryButton, countryList) {
+  // Toggle dropdown on button click
+  countryButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isExpanded = countryButton.getAttribute('aria-expanded') === 'true';
+    
+    // Toggle dropdown
+    const newState = !isExpanded;
+    countryButton.setAttribute('aria-expanded', newState);
+    countryList.style.display = newState ? 'block' : 'none';
+    
+    if (newState) {
+      // Focus first item when opening
+      const firstItem = countryList.querySelector('a');
+      if (firstItem) {
+        setTimeout(() => firstItem.focus(), 100);
+      }
+    }
+  });
+
+  // Handle country/language selection
+  countryList.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      e.preventDefault();
+      
+      // Close dropdown
+      countryButton.setAttribute('aria-expanded', 'false');
+      countryList.style.display = 'none';
+      
+      // Log selection (replace with actual navigation)
+      console.log(`Country/Language selected: ${e.target.textContent} (${e.target.href})`);
+      
+      // In real implementation, redirect to the selected country/language
+      // window.location.href = e.target.href;
+    }
+  });
+
+  // Keyboard navigation
+  countryList.addEventListener('keydown', (e) => {
+    const links = countryList.querySelectorAll('a');
+    const currentIndex = Array.from(links).indexOf(e.target);
+    
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        const nextIndex = (currentIndex + 1) % links.length;
+        links[nextIndex].focus();
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        const prevIndex = (currentIndex - 1 + links.length) % links.length;
+        links[prevIndex].focus();
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        e.target.click();
+        break;
+      case 'Escape':
+        e.preventDefault();
+        countryButton.setAttribute('aria-expanded', 'false');
+        countryList.style.display = 'none';
+        countryButton.focus();
+        break;
+    }
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!countrySelector.contains(e.target)) {
+      countryButton.setAttribute('aria-expanded', 'false');
+      countryList.style.display = 'none';
+    }
+  });
+
+  // Close dropdown on escape key globally
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      countryButton.setAttribute('aria-expanded', 'false');
+      countryList.style.display = 'none';
+    }
+  });
 }

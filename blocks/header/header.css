@@ -14,8 +14,8 @@ header nav#nav {
   box-sizing: border-box;
   display: grid;
   grid-template:
-    "hamburger brand tools" var(--nav-height)
-    "sections sections sections" 1fr / auto 1fr auto;
+    "hamburger brand tools country" var(--nav-height)
+    "sections sections sections sections" 1fr / auto 1fr auto auto;
   align-items: center;
   gap: 0 2em;
   margin: auto;
@@ -29,7 +29,8 @@ header nav#nav[aria-expanded="true"] {
   grid-template:
     "hamburger brand" var(--nav-height)
     "sections sections" 1fr
-    "tools tools" var(--nav-height) / auto 1fr;
+    "tools tools" var(--nav-height)
+    "country country" var(--nav-height) / auto 1fr;
   overflow-y: auto;
   min-height: 100vh;
 }
@@ -44,6 +45,14 @@ header nav#nav[aria-expanded="true"] {
   header nav#nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+  }
+  
+  header nav#nav .nav-tools,
+  header nav#nav .nav-country {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 
   header nav#nav[aria-expanded="true"] {
@@ -290,6 +299,152 @@ header nav#nav .nav-tools .button {
   margin: 0;
 }
 
+/* country selector */
+header nav#nav .nav-country {
+  grid-area: country;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Country Selector */
+.country-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.country-selector-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.country-selector-button:hover {
+  background: #f5f5f5;
+  border-color: var(--emirates-red, #dc143c);
+}
+
+.country-selector-button:focus {
+  outline: 2px solid var(--emirates-red, #dc143c);
+  outline-offset: 2px;
+}
+
+.country-icon {
+  width: 18px;
+  height: 18px;
+  filter: grayscale(1) contrast(1.2) brightness(0.6);
+  transition: filter 0.3s ease;
+}
+
+.country-selector-button:hover .country-icon {
+  filter: grayscale(0) contrast(1) brightness(1);
+}
+
+.country-arrow {
+  font-size: 10px;
+  color: #666;
+  transition: transform 0.3s ease;
+}
+
+.country-selector-button[aria-expanded="true"] .country-arrow {
+  transform: rotate(180deg);
+}
+
+.country-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  max-width: 280px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+}
+
+.country-dropdown li {
+  margin: 0;
+  padding: 0;
+}
+
+.country-dropdown a {
+  display: block;
+  padding: 10px 16px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  filter: grayscale(1) contrast(1.2) brightness(0.8);
+  transition: all 0.3s ease;
+}
+
+.country-dropdown a:hover {
+  background: #f8f8f8;
+  filter: grayscale(0) contrast(1) brightness(1);
+}
+
+/* Nested languages support */
+.country-dropdown .has-languages > a {
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  background: #f9f9f9;
+}
+
+.country-dropdown .has-languages ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+}
+
+.country-dropdown .has-languages ul li a {
+  padding-left: 32px;
+  font-weight: normal;
+  border-bottom: none;
+  background: white;
+  font-size: 13px;
+}
+
+.country-dropdown .has-languages ul li a:hover {
+  background: #f0f0f0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 900px) {
+  header nav#nav .nav-country {
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+    margin-top: 12px;
+    justify-content: center;
+  }
+  
+  .country-selector-button {
+    width: 100%;
+    justify-content: center;
+    max-width: 200px;
+  }
+  
+  .country-dropdown {
+    left: 0;
+    right: 0;
+    width: calc(100vw - 32px);
+    max-width: none;
+  }
+}
+
 /* breadcrumbs */
 header .breadcrumbs {
   display: none;
@@ -335,6 +490,84 @@ header .breadcrumbs ol li:last-of-type {
 
 @media screen and (width >= 900px) {
   header .breadcrumbs {
+    display: block;
+  }
+}
+
+/* Country & Language Menu Styling */
+.country-language-toggle {
+  position: relative;
+}
+
+/* Nested dropdown styling for country/language menu */
+@media (width >= 900px) {
+  header nav#nav .nav-sections .default-content-wrapper > ul > li > ul > li > ul {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: var(--light-color);
+    white-space: nowrap;
+    min-width: 150px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 8px 0;
+    z-index: 1001;
+  }
+
+  header nav#nav .nav-sections .default-content-wrapper > ul > li > ul > li:hover > ul {
+    display: block;
+  }
+
+  header nav#nav .nav-sections .default-content-wrapper > ul > li > ul > li > ul > li {
+    padding: 8px 16px;
+    border-radius: 0;
+    margin: 0;
+  }
+
+  header nav#nav .nav-sections .default-content-wrapper > ul > li > ul > li > ul > li:hover {
+    background-color: #f0f0f0;
+  }
+
+  header nav#nav .nav-sections .default-content-wrapper > ul > li > ul > li > ul > li:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+
+  header nav#nav .nav-sections .default-content-wrapper > ul > li > ul > li > ul > li:last-child {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+}
+
+/* Style emoji flags to be black and white */
+header nav#nav .nav-sections a[href*="emirates.com"] {
+  filter: grayscale(1) contrast(1.2) brightness(0.8);
+  transition: filter 0.3s ease;
+}
+
+header nav#nav .nav-sections a[href*="emirates.com"]:hover {
+  filter: grayscale(0) contrast(1) brightness(1);
+}
+
+/* Mobile adjustments for nested dropdowns */
+@media (max-width: 900px) {
+  header nav#nav .nav-sections .default-content-wrapper > ul > li > ul > li > ul {
+    position: static;
+    left: auto;
+    top: auto;
+    width: 100%;
+    box-shadow: inset 0 0 0 1px #eee;
+    background-color: #f8f8f8;
+    margin-top: 8px;
+    border-radius: 6px;
+  }
+  
+  header nav#nav .nav-sections .default-content-wrapper > ul > li > ul > li > ul > li {
+    padding: 12px 20px;
+  }
+  
+  header nav#nav .nav-sections .has-language-submenu.submenu-open > ul {
     display: block;
   }
 }
