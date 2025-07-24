@@ -253,13 +253,14 @@ function setupCountrySelector(navCountry) {
     <span class="country-arrow">▼</span>
   `;
 
-  // Transform the ul into a dropdown
-  countryList.className = 'country-dropdown';
-  countryList.setAttribute('role', 'menu');
-  countryList.style.display = 'none';
+  // Clone the original list to avoid DOM circular reference
+  const countryDropdown = countryList.cloneNode(true);
+  countryDropdown.className = 'country-dropdown';
+  countryDropdown.setAttribute('role', 'menu');
+  countryDropdown.style.display = 'none';
 
   // Process nested lists for countries with multiple languages
-  countryList.querySelectorAll('li').forEach(countryItem => {
+  countryDropdown.querySelectorAll('li').forEach(countryItem => {
     const countryLink = countryItem.querySelector('a');
     if (countryLink) {
       countryLink.setAttribute('role', 'menuitem');
@@ -275,26 +276,26 @@ function setupCountrySelector(navCountry) {
     }
   });
 
-  // Create container and insert before the original list
+  // Create container with button and cloned dropdown
   const countrySelector = document.createElement('div');
   countrySelector.className = 'country-selector';
   countrySelector.appendChild(countryButton);
-  countrySelector.appendChild(countryList);
+  countrySelector.appendChild(countryDropdown);
 
   // Replace the original list with our enhanced selector
   countryList.parentNode.replaceChild(countrySelector, countryList);
 
   // Add interaction events
-  setupCountrySelectorEvents(countrySelector, countryButton, countryList);
+  setupCountrySelectorEvents(countrySelector, countryButton, countryDropdown);
 }
 
 /**
  * Setup country selector interaction events
  * @param {Element} countrySelector The country selector container
  * @param {Element} countryButton The country button
- * @param {Element} countryList The country dropdown list
+ * @param {Element} countryDropdown The country dropdown list
  */
-function setupCountrySelectorEvents(countrySelector, countryButton, countryList) {
+function setupCountrySelectorEvents(countrySelector, countryButton, countryDropdown) {
   // Toggle dropdown on button click
   countryButton.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -303,11 +304,11 @@ function setupCountrySelectorEvents(countrySelector, countryButton, countryList)
     // Toggle dropdown
     const newState = !isExpanded;
     countryButton.setAttribute('aria-expanded', newState);
-    countryList.style.display = newState ? 'block' : 'none';
+    countryDropdown.style.display = newState ? 'block' : 'none';
     
     if (newState) {
       // Focus first item when opening
-      const firstItem = countryList.querySelector('a');
+      const firstItem = countryDropdown.querySelector('a');
       if (firstItem) {
         setTimeout(() => firstItem.focus(), 100);
       }
@@ -315,13 +316,13 @@ function setupCountrySelectorEvents(countrySelector, countryButton, countryList)
   });
 
   // Handle country/language selection
-  countryList.addEventListener('click', (e) => {
+  countryDropdown.addEventListener('click', (e) => {
     if (e.target.tagName === 'A') {
       e.preventDefault();
       
       // Close dropdown
       countryButton.setAttribute('aria-expanded', 'false');
-      countryList.style.display = 'none';
+      countryDropdown.style.display = 'none';
       
       // Log selection (replace with actual navigation)
       console.log(`Country/Language selected: ${e.target.textContent} (${e.target.href})`);
@@ -332,8 +333,8 @@ function setupCountrySelectorEvents(countrySelector, countryButton, countryList)
   });
 
   // Keyboard navigation
-  countryList.addEventListener('keydown', (e) => {
-    const links = countryList.querySelectorAll('a');
+  countryDropdown.addEventListener('keydown', (e) => {
+    const links = countryDropdown.querySelectorAll('a');
     const currentIndex = Array.from(links).indexOf(e.target);
     
     switch (e.key) {
@@ -355,7 +356,7 @@ function setupCountrySelectorEvents(countrySelector, countryButton, countryList)
       case 'Escape':
         e.preventDefault();
         countryButton.setAttribute('aria-expanded', 'false');
-        countryList.style.display = 'none';
+        countryDropdown.style.display = 'none';
         countryButton.focus();
         break;
     }
@@ -365,7 +366,7 @@ function setupCountrySelectorEvents(countrySelector, countryButton, countryList)
   document.addEventListener('click', (e) => {
     if (!countrySelector.contains(e.target)) {
       countryButton.setAttribute('aria-expanded', 'false');
-      countryList.style.display = 'none';
+      countryDropdown.style.display = 'none';
     }
   });
 
@@ -373,7 +374,7 @@ function setupCountrySelectorEvents(countrySelector, countryButton, countryList)
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       countryButton.setAttribute('aria-expanded', 'false');
-      countryList.style.display = 'none';
+      countryDropdown.style.display = 'none';
     }
   });
 }
