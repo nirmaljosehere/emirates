@@ -18,7 +18,7 @@ main .hero-container {
 
 .hero .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   width: 100%;
   padding: 60px 32px 40px 32px;
   background: linear-gradient(
