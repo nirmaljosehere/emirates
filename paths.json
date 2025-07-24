@@ -1,8 +1,14 @@
 {
   "mappings": [
-    "/content/emirates/france/:/france/en/",
     "/content/emirates/france/en/:/france/en",
     "/content/emirates/france/fr/:/france/fr",
+    "/content/emirates/es/en/:/es/en",
+    "/content/emirates/es/es/:/es/es",
+    "/content/emirates/uk/en/:/uk/en",
+    "/content/emirates/de/de/:/de/de",
+    "/content/emirates/de/en/:/de/en",
+    "/content/emirates/uae/en/:/uae/en",
+    "/content/emirates/uae/ar/:/uae/ar",
     "/content/emirates/:/",
     "/content/emirates/configuration:/.helix/config.json"
   ],
