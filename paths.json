@@ -3,8 +3,7 @@
     "/content/emirates/language-masters/en/:/",
     "/content/emirates/france/fr/:/france-fr",
     "/content/emirates/france/en/:/france-en",
-    "/content/emirates/configuration:/.helix/config.json",
-    "/content/emirates/metadata:/metadata.json"
+    "/content/emirates/configuration:/.helix/config.json"
   ],
   "includes": [
     "/content/emirates/"
