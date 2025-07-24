@@ -1,8 +1,6 @@
 {
   "mappings": [
-    "/content/emirates/language-masters/en/:/",
-    "/content/emirates/france/en/:/france-en",
-    "/content/emirates/france/fr/:/france-fr",
+    "/content/emirates/:/",
     "/content/emirates/configuration:/.helix/config.json",
     "/content/emirates/metadata:/metadata.json"
   ],
