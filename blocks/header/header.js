@@ -172,9 +172,6 @@ export default async function decorate(block) {
 
   console.log("navMeta>>>>>>>>>"+navMeta);
   console.log("navPath>>>>>>>>>"+navPath);
-  console.log("fragment>>>>>>>>>", fragment);
-  console.log("fragment.children>>>>>>>>>", fragment?.children);
-  console.log("fragment.innerHTML>>>>>>>>>", fragment?.innerHTML);
 
   // decorate nav DOM
   const nav = document.createElement('nav');
@@ -328,8 +325,6 @@ function setupCountrySelectorEvents(countrySelector, countryButton, countryDropd
   // Handle country/language selection
   countryDropdown.addEventListener('click', (e) => {
     if (e.target.tagName === 'A') {
-      e.preventDefault();
-      
       // Close dropdown
       countryButton.setAttribute('aria-expanded', 'false');
       countryDropdown.style.display = 'none';
@@ -337,8 +332,8 @@ function setupCountrySelectorEvents(countrySelector, countryButton, countryDropd
       // Log selection (replace with actual navigation)
       console.log(`Country/Language selected: ${e.target.textContent} (${e.target.href})`);
       
-      // In real implementation, redirect to the selected country/language
-      // window.location.href = e.target.href;
+      // Redirect to the selected country/language
+      window.location.href = e.target.href;
     }
   });
 

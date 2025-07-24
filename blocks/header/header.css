@@ -396,6 +396,10 @@ header nav#nav .nav-country {
   filter: grayscale(0) contrast(1) brightness(1);
 }
 
+.has-languages > ul > li > a, .has-languages > p {
+  padding: 8px;
+}
+
 /* Nested languages support */
 .country-dropdown .has-languages > a {
   font-weight: 600;

@@ -27,8 +27,6 @@ export default function decorate(block) {
   const settings = {
     layout: config['layout-direction'] || layoutConfig,
   };
-  
-  console.log('Final settings:', settings);
 
   // Filter out configuration rows and get content rows
   const contentRows = allRows.filter(row => {
@@ -60,8 +58,6 @@ export default function decorate(block) {
     return true; // Include content rows
   });
 
-  console.log('Content rows after filtering:', contentRows.length);
-
   // Extract image and content from content rows
   let imageElement = null;
   let contentElements = [];
@@ -72,10 +68,8 @@ export default function decorate(block) {
       const img = cell.querySelector('img');
       if (img && !imageElement) {
         imageElement = img;
-        console.log('Found image element');
       } else if (cell.textContent.trim() || cell.querySelector('*:not(img)')) {
         contentElements.push(cell);
-        console.log('Found content element');
       }
     });
   });
@@ -111,18 +105,13 @@ export default function decorate(block) {
   });
 
   // Apply layout configuration
-  console.log('Applying layout:', settings.layout);
   if (settings.layout === 'content-left') {
     block.classList.add('content-left');
     block.appendChild(contentContainer);
     block.appendChild(imageContainer);
-    console.log('Applied content-left layout');
   } else {
     block.classList.add('image-left');
     block.appendChild(imageContainer);
     block.appendChild(contentContainer);
-    console.log('Applied image-left layout');
   }
-  
-  console.log('Final block classes:', block.className);
 }
