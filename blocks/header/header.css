@@ -430,10 +430,7 @@ li.has-languages > ul > li {
 }
 
 .country-dropdown .has-languages ul li a {
-  padding-left: 32px;
-  font-weight: normal;
   border-bottom: none;
-  background: white;
   font-size: 13px;
 }
 
