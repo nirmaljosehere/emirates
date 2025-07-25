@@ -151,6 +151,59 @@ async function buildBreadcrumbs() {
 }
 
 /**
+ * Transform navigation links based on current site context
+ * @param {Element} fragment The navigation fragment
+ */
+function transformNavigationLinks(fragment) {
+  if (!fragment) return;
+  
+  // Determine current site context from URL
+  const currentPath = window.location.pathname;
+  let sitePrefix = '';
+  
+  // Extract site prefix from current URL
+  if (currentPath.startsWith('/france/en/')) {
+    sitePrefix = '/france/en';
+  } else if (currentPath.startsWith('/france/fr/')) {
+    sitePrefix = '/france/fr';
+  } else if (currentPath.startsWith('/es/en/')) {
+    sitePrefix = '/es/en';
+  } else if (currentPath.startsWith('/es/es/')) {
+    sitePrefix = '/es/es';
+  } else if (currentPath.startsWith('/de/en/')) {
+    sitePrefix = '/de/en';
+  } else if (currentPath.startsWith('/de/de/')) {
+    sitePrefix = '/de/de';
+  } else if (currentPath.startsWith('/uk/en/')) {
+    sitePrefix = '/uk/en';
+  } else if (currentPath.startsWith('/uae/en/')) {
+    sitePrefix = '/uae/en';
+  } else if (currentPath.startsWith('/uae/ar/')) {
+    sitePrefix = '/uae/ar';
+  }
+  // For root site (language-masters), no prefix needed
+  
+  // Transform all links in the navigation
+  const links = fragment.querySelectorAll('a[href]');
+  links.forEach(link => {
+    const href = link.getAttribute('href');
+    
+    // Only transform relative links that don't already have a site prefix
+    if (href && href.startsWith('/') && !href.startsWith('//') && sitePrefix) {
+      // Check if link doesn't already have a country/language prefix
+      const hasPrefix = ['/france/', '/es/', '/de/', '/uk/', '/uae/'].some(prefix => href.startsWith(prefix));
+      
+      if (!hasPrefix) {
+        // Transform the link by adding the site prefix
+        const newHref = sitePrefix + href;
+        link.setAttribute('href', newHref);
+        console.log(`Transformed nav link: ${href} → ${newHref}`);
+      }
+    }
+  });
+}
+
+/**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
@@ -193,6 +246,9 @@ export default async function decorate(block) {
 
   console.log("navMeta>>>>>>>>>"+navMeta);
   console.log("navPath>>>>>>>>>"+navPath);
+
+  // Transform navigation links based on current site context
+  transformNavigationLinks(fragment);
 
   // decorate nav DOM
   const nav = document.createElement('nav');
