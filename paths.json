@@ -9,7 +9,7 @@
     "/content/emirates/de/en/:/de/en",
     "/content/emirates/uae/en/:/uae/en",
     "/content/emirates/uae/ar/:/uae/ar",
-    "/content/emirates/:/",
+    "/content/emirates/language-masters/en:/",
     "/content/emirates/configuration:/.helix/config.json"
   ],
   "includes": [
