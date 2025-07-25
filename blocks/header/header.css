@@ -429,9 +429,7 @@ header nav#nav .nav-country {
 /* Mobile responsiveness */
 @media (max-width: 900px) {
   header nav#nav .nav-country {
-    padding-top: 12px;
     border-top: 1px solid #eee;
-    margin-top: 12px;
     justify-content: center;
   }
   
