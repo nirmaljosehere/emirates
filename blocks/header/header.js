@@ -168,6 +168,27 @@ export default async function decorate(block) {
       navPath = navMeta.startsWith('/') ? navMeta : `/${navMeta}`;
     }
   }
+  
+  // Handle Universal Editor environment
+  const isUniversalEditor = window.location.pathname.includes('/content/emirates/');
+  if (isUniversalEditor) {
+    // Extract language from current URL path
+    const currentPath = window.location.pathname;
+    let language = 'en'; // default to English
+    
+    // Detect language from URL structure like /content/emirates/country/language/
+    const pathParts = currentPath.split('/');
+    if (pathParts.length >= 5) {
+      const potentialLang = pathParts[4]; // /content/emirates/country/language/
+      if (['en', 'fr', 'es', 'de', 'ar'].includes(potentialLang)) {
+        language = potentialLang;
+      }
+    }
+    
+    // Always use language-masters for the detected language in Universal Editor
+    navPath = `/content/emirates/language-masters/${language}/nav`;
+  }
+  
   const fragment = await loadFragment(navPath);
 
   console.log("navMeta>>>>>>>>>"+navMeta);

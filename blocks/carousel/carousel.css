@@ -116,7 +116,12 @@
   text-align: left;
 }
 
-.carousel .emirates-slide .slide-content h1, h2, h3, h4, h5, h6 {
+.carousel .emirates-slide .slide-content h1,
+.carousel .emirates-slide .slide-content h2,
+.carousel .emirates-slide .slide-content h3,
+.carousel .emirates-slide .slide-content h4,
+.carousel .emirates-slide .slide-content h5,
+.carousel .emirates-slide .slide-content h6 {
   text-align: left;
 }
 

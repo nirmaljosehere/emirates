@@ -12,7 +12,7 @@
 
 :root {
   /* Emirates brand colors */
-  --emirates-red: #dc143c;
+  --emirates-red: #d71921;
   --emirates-gold: #ffeb3b;
   --emirates-dark-blue: #1a237e;
   --emirates-light-gray: #f5f5f5;
@@ -184,7 +184,7 @@ button {
   padding: 0.5em 1.2em;
   font-family: var(--body-font-family);
   font-style: normal;
-  font-weight: 500;
+  font-weight: bold;
   line-height: 1.25;
   text-align: center;
   text-decoration: none;
@@ -194,6 +194,7 @@ button {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  border-radius: 4px;
 }
 
 a.button:hover,
