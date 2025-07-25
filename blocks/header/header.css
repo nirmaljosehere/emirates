@@ -375,7 +375,7 @@ header nav#nav .nav-country {
   margin: 0;
 }
 
-.country-dropdown li {
+li.has-languages > ul > li {
   margin: 0;
   font-weight: normal;
   border-bottom: none;
@@ -384,6 +384,16 @@ header nav#nav .nav-country {
   filter: grayscale(1) contrast(1.2) brightness(0.8);
   padding: 8px 32px;
 }
+
+/* .country-dropdown li {
+  margin: 0;
+  font-weight: normal;
+  border-bottom: none;
+  background: white;
+  font-size: 13px;
+  filter: grayscale(1) contrast(1.2) brightness(0.8);
+  padding: 8px 32px;
+} */
 
 .country-dropdown a {
   display: block;
