@@ -377,7 +377,12 @@ header nav#nav .nav-country {
 
 .country-dropdown li {
   margin: 0;
-  padding: 0;
+  font-weight: normal;
+  border-bottom: none;
+  background: white;
+  font-size: 13px;
+  filter: grayscale(1) contrast(1.2) brightness(0.8);
+  padding: 8px 32px;
 }
 
 .country-dropdown a {
