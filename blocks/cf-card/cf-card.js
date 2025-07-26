@@ -89,6 +89,7 @@ function createCard(teaserItem) {
     );
     
     imageDiv.appendChild(optimizedPic);
+    console.log('CF-Card: Image div created:', imageDiv);
     li.appendChild(imageDiv);
   }
   
@@ -101,6 +102,7 @@ function createCard(teaserItem) {
     const preTitle = document.createElement('p');
     preTitle.className = 'cf-card-pre-title';
     preTitle.textContent = teaserItem.preTitle;
+    console.log('CF-Card: Pre-title created:', preTitle);
     bodyDiv.appendChild(preTitle);
   }
   
@@ -109,6 +111,7 @@ function createCard(teaserItem) {
     const title = document.createElement('h3');
     title.className = 'cf-card-title';
     title.textContent = teaserItem.title;
+    console.log('CF-Card: Title created:', title);
     bodyDiv.appendChild(title);
   }
   
@@ -117,10 +120,12 @@ function createCard(teaserItem) {
     const description = document.createElement('div');
     description.className = 'cf-card-description';
     description.innerHTML = teaserItem.description.html;
+    console.log('CF-Card: Description created:', description);
     bodyDiv.appendChild(description);
   }
   
   li.appendChild(bodyDiv);
+  console.log('CF-Card: Card created:', li);
   return li;
 }
 
