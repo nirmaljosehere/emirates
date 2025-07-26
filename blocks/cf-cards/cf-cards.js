@@ -180,8 +180,15 @@ function createConfigurationPlaceholder() {
  * @param {string} locale - The locale code
  */
 async function processCardRow(row, ul, locale) {
+  console.log('CF-Cards: processCardRow called with:', row);
+  
+  // Check for CF Card model attribute
+  const modelAttr = row.getAttribute('data-aue-model');
+  console.log('CF-Cards: Model attribute:', modelAttr);
+  
   // Check if this is a CF Card component that hasn't been configured yet
-  if (row.hasAttribute('data-aue-model') && row.getAttribute('data-aue-model') === 'cf-card') {
+  if (row.hasAttribute('data-aue-model') && modelAttr === 'cf-card') {
+    console.log('CF-Cards: Found unconfigured CF Card');
     // This is an unconfigured CF Card - create a placeholder
     const placeholder = createConfigurationPlaceholder();
     moveInstrumentation(row, placeholder);
@@ -191,14 +198,19 @@ async function processCardRow(row, ul, locale) {
   
   // Extract slug from the first cell (for configured CF Cards)
   const slugCell = row.querySelector('div:first-child');
+  console.log('CF-Cards: Slug cell found:', slugCell);
+  
   if (!slugCell) {
     console.warn('CF-Cards: No slug found in row', row);
+    console.log('CF-Cards: Row HTML:', row.outerHTML);
     return;
   }
   
   const slug = slugCell.textContent.trim();
+  console.log('CF-Cards: Extracted slug:', slug);
+  
   if (!slug) {
-    // Skip empty rows silently (happens when CF Cards block is first created)
+    console.log('CF-Cards: Empty slug, skipping');
     return;
   }
   
@@ -256,6 +268,7 @@ export default async function decorate(block) {
   const locale = getLocaleFromURL();
   
   console.log(`CF-Cards: Processing block with locale "${locale}"`);
+  console.log('CF-Cards: Block children:', block.children);
   
   // Create container ul
   const ul = document.createElement('ul');
@@ -263,9 +276,15 @@ export default async function decorate(block) {
   
   // Process each cf-card row
   const rows = [...block.children];
+  console.log('CF-Cards: Rows to process:', rows);
   
   // Process all rows in parallel for better performance
-  const promises = rows.map(row => processCardRow(row, ul, locale));
+  const promises = rows.map((row, index) => {
+    console.log(`CF-Cards: Processing row ${index}:`, row);
+    console.log(`CF-Cards: Row innerHTML:`, row.innerHTML);
+    console.log(`CF-Cards: Row attributes:`, [...row.attributes]);
+    return processCardRow(row, ul, locale);
+  });
   
   // Clear block and add container
   block.textContent = '';
