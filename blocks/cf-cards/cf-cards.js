@@ -63,9 +63,10 @@ async function fetchTeaserData(slug, locale) {
 /**
  * Create a card element from teaser data
  * @param {Object} teaserItem - The teaser data item
+ * @param {string} baseUrl - The base URL for images (author or publish)
  * @returns {HTMLElement} The card list item element
  */
-function createCard(teaserItem) {
+function createCard(teaserItem, baseUrl) {
   const li = document.createElement('li');
   li.className = 'cf-cards-card';
   
@@ -74,14 +75,18 @@ function createCard(teaserItem) {
     const imageDiv = document.createElement('div');
     imageDiv.className = 'cf-cards-card-image';
     
+    // Construct full image URL with baseUrl
+    const fullImageUrl = `${baseUrl}${teaserItem.primaryImage._dynamicUrl}`;
+    console.log('CF-Cards: Full image URL:', fullImageUrl);
+    
     // Create optimized picture element
     const img = document.createElement('img');
-    img.src = teaserItem.primaryImage._dynamicUrl;
+    img.src = fullImageUrl;
     img.alt = teaserItem.title || '';
     img.loading = 'lazy';
     
     const optimizedPic = createOptimizedPicture(
-      teaserItem.primaryImage._dynamicUrl, 
+      fullImageUrl, 
       teaserItem.title || '', 
       false, 
       [{ width: '750' }]
@@ -118,7 +123,6 @@ function createCard(teaserItem) {
     description.innerHTML = teaserItem.description.html;
     bodyDiv.appendChild(description);
   }
-  console.log('CF-Cards: Card created:', li);
   li.appendChild(bodyDiv);
   return li;
 }
@@ -180,11 +184,9 @@ function createConfigurationPlaceholder() {
  * @param {string} locale - The locale code
  */
 async function processCardRow(row, ul, locale) {
-  console.log('CF-Cards: processCardRow called with:', row);
   
   // Check for CF Card model attribute
   const modelAttr = row.getAttribute('data-aue-model');
-  console.log('CF-Cards: Model attribute:', modelAttr);
   
   // Extract slug first - try different selectors
   let slug = '';
@@ -201,11 +203,9 @@ async function processCardRow(row, ul, locale) {
     console.log('CF-Cards: Found slug by div selector:', slug);
   }
   
-  console.log('CF-Cards: Final extracted slug:', slug);
   
   // If no slug found and this is a CF Card model, show configuration placeholder
   if (!slug && modelAttr === 'cf-card') {
-    console.log('CF-Cards: CF Card with no slug - showing configuration placeholder');
     const placeholder = createConfigurationPlaceholder();
     moveInstrumentation(row, placeholder);
     ul.appendChild(placeholder);
@@ -224,6 +224,12 @@ async function processCardRow(row, ul, locale) {
   ul.appendChild(loadingCard);
   
   try {
+    // Determine base URL for images
+    const isUE = isUniversalEditor();
+    const baseUrl = isUE 
+      ? 'https://author-p135360-e1341441.adobeaemcloud.com' 
+      : 'https://publish-p135360-e1341441.adobeaemcloud.com';
+    
     // Fetch teaser data
     const response = await fetchTeaserData(slug, locale);
     
@@ -240,7 +246,7 @@ async function processCardRow(row, ul, locale) {
     
     // Create card with fetched data
     const teaserItem = teasers[0]; // Use first item
-    const card = createCard(teaserItem);
+    const card = createCard(teaserItem, baseUrl);
     
     // Move instrumentation from loading card to new card
     moveInstrumentation(loadingCard, card);
@@ -269,10 +275,7 @@ async function processCardRow(row, ul, locale) {
  * @param {HTMLElement} block - The cf-cards block element
  */
 export default async function decorate(block) {
-  const locale = getLocaleFromURL();
-  
-  console.log(`CF-Cards: Processing block with locale "${locale}"`);
-  console.log('CF-Cards: Block children:', block.children);
+  const locale = getLocaleFromURL(); 
   
   // Create container ul
   const ul = document.createElement('ul');
@@ -280,13 +283,9 @@ export default async function decorate(block) {
   
   // Process each cf-card row
   const rows = [...block.children];
-  console.log('CF-Cards: Rows to process:', rows);
   
   // Process all rows in parallel for better performance
   const promises = rows.map((row, index) => {
-    console.log(`CF-Cards: Processing row ${index}:`, row);
-    console.log(`CF-Cards: Row innerHTML:`, row.innerHTML);
-    console.log(`CF-Cards: Row attributes:`, [...row.attributes]);
     return processCardRow(row, ul, locale);
   });
   
