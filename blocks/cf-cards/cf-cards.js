@@ -92,7 +92,7 @@ function createCard(teaserItem, baseUrl) {
       [{ width: '750' }]
     );
     
-    imageDiv.appendChild(optimizedPic);
+    imageDiv.appendChild(fullImageUrl);
     li.appendChild(imageDiv);
   }
   
