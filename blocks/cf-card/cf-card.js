@@ -195,12 +195,15 @@ export default async function decorate(block) {
     // Create card for each teaser (usually just one)
     teasers.forEach((teaserItem) => {
       const card = createCard(teaserItem);
+      console.log('CF-Card: Card created:', card);
       moveInstrumentation(block.firstElementChild, card);
+      console.log('CF-Card: Card before appending  to ul:', card);
       ul.appendChild(card);
+      console.log('CF-Card: Card appended to ul:', card);
     });
-    
+    console.log('CF-Card: UL created:', ul);
     block.appendChild(ul);
-    
+    console.log('CF-Card: Block appended with UL:', block);
   } catch (error) {
     console.error('CF-Card error:', error);
     showError(block, error.message);
