@@ -66,6 +66,7 @@ async function fetchTeaserData(slug, locale) {
  * @returns {HTMLElement} The card list item element
  */
 function createCard(teaserItem) {
+  console.log('CF-Card: Creating card with data:', teaserItem);
   const li = document.createElement('li');
   li.className = 'cf-card-card';
   
