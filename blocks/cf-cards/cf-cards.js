@@ -45,7 +45,7 @@ async function fetchTeaserData(slug, locale) {
   
   const endpoint = `${baseUrl}/graphql/execute.json/emirates/get-teaser-by-slug;slug=${slug};locale=${locale};`;
   
-  console.log(`CF-Card: Using ${isUE ? 'author' : 'publish'} endpoint: ${endpoint}`);
+  console.log(`CF-Cards: Using ${isUE ? 'author' : 'publish'} endpoint for slug "${slug}"`);
   
   try {
     const response = await fetch(endpoint);
@@ -55,7 +55,7 @@ async function fetchTeaserData(slug, locale) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching teaser data:', error);
+    console.error(`Error fetching teaser data for slug "${slug}":`, error);
     throw error;
   }
 }
@@ -66,14 +66,13 @@ async function fetchTeaserData(slug, locale) {
  * @returns {HTMLElement} The card list item element
  */
 function createCard(teaserItem) {
-  console.log('CF-Card: Creating card with data:', teaserItem);
   const li = document.createElement('li');
-  li.className = 'cf-card-card';
+  li.className = 'cf-cards-card';
   
   // Create image section
   if (teaserItem.primaryImage && teaserItem.primaryImage._dynamicUrl) {
     const imageDiv = document.createElement('div');
-    imageDiv.className = 'cf-card-card-image';
+    imageDiv.className = 'cf-cards-card-image';
     
     // Create optimized picture element
     const img = document.createElement('img');
@@ -89,88 +88,99 @@ function createCard(teaserItem) {
     );
     
     imageDiv.appendChild(optimizedPic);
-    console.log('CF-Card: Image div created:', imageDiv);
     li.appendChild(imageDiv);
   }
   
   // Create content section
   const bodyDiv = document.createElement('div');
-  bodyDiv.className = 'cf-card-card-body';
+  bodyDiv.className = 'cf-cards-card-body';
   
   // Add pre-title if available
   if (teaserItem.preTitle) {
     const preTitle = document.createElement('p');
-    preTitle.className = 'cf-card-pre-title';
+    preTitle.className = 'cf-cards-pre-title';
     preTitle.textContent = teaserItem.preTitle;
-    console.log('CF-Card: Pre-title created:', preTitle);
     bodyDiv.appendChild(preTitle);
   }
   
   // Add title
   if (teaserItem.title) {
     const title = document.createElement('h3');
-    title.className = 'cf-card-title';
+    title.className = 'cf-cards-title';
     title.textContent = teaserItem.title;
-    console.log('CF-Card: Title created:', title);
     bodyDiv.appendChild(title);
   }
   
   // Add description
   if (teaserItem.description && teaserItem.description.html) {
     const description = document.createElement('div');
-    description.className = 'cf-card-description';
+    description.className = 'cf-cards-description';
     description.innerHTML = teaserItem.description.html;
-    console.log('CF-Card: Description created:', description);
     bodyDiv.appendChild(description);
   }
   
   li.appendChild(bodyDiv);
-  console.log('CF-Card: Card created:', li);
   return li;
 }
 
 /**
- * Show loading state
- * @param {HTMLElement} block - The block element
+ * Create loading placeholder for a card
+ * @param {string} slug - The slug being loaded
+ * @returns {HTMLElement} The loading placeholder element
  */
-function showLoading(block) {
-  block.innerHTML = '<div class="cf-card-loading">Loading...</div>';
+function createLoadingCard(slug) {
+  const li = document.createElement('li');
+  li.className = 'cf-cards-card cf-cards-loading';
+  li.innerHTML = `
+    <div class="cf-cards-card-body">
+      <p>Loading "${slug}"...</p>
+    </div>
+  `;
+  return li;
 }
 
 /**
- * Show error state
- * @param {HTMLElement} block - The block element
- * @param {string} message - Error message
+ * Create error placeholder for a card
+ * @param {string} slug - The slug that failed
+ * @param {string} error - The error message
+ * @returns {HTMLElement} The error placeholder element
  */
-function showError(block, message) {
-  block.innerHTML = `<div class="cf-card-error">Error: ${message}</div>`;
+function createErrorCard(slug, error) {
+  const li = document.createElement('li');
+  li.className = 'cf-cards-card cf-cards-error';
+  li.innerHTML = `
+    <div class="cf-cards-card-body">
+      <h3 class="cf-cards-title">Error Loading "${slug}"</h3>
+      <p class="cf-cards-description">${error}</p>
+    </div>
+  `;
+  return li;
 }
 
 /**
- * Main decoration function
- * @param {HTMLElement} block - The cf-cards block element
+ * Process a single cf-card row
+ * @param {HTMLElement} row - The cf-card row element
+ * @param {HTMLElement} ul - The container ul element
+ * @param {string} locale - The locale code
  */
-export default async function decorate(block) {
-  // Extract slug from the first cell in the block
-  const slugCell = block.querySelector('div:first-child');
+async function processCardRow(row, ul, locale) {
+  // Extract slug from the first cell
+  const slugCell = row.querySelector('div:first-child');
   if (!slugCell) {
-    showError(block, 'No slug configuration found');
+    console.warn('CF-Cards: No slug found in row', row);
     return;
   }
   
   const slug = slugCell.textContent.trim();
   if (!slug) {
-    showError(block, 'Empty slug configuration');
+    console.warn('CF-Cards: Empty slug in row', row);
     return;
   }
   
-  // Get locale from URL
-  const locale = getLocaleFromURL();
-  
-  console.log(`CF-Card: Loading teaser with slug="${slug}" and locale="${locale}"`);
-  
-  // Show loading state
-  showLoading(block);
+  // Create loading placeholder
+  const loadingCard = createLoadingCard(slug);
+  moveInstrumentation(row, loadingCard);
+  ul.appendChild(loadingCard);
   
   try {
     // Fetch teaser data
@@ -187,23 +197,57 @@ export default async function decorate(block) {
       throw new Error(`No teaser found for slug "${slug}" and locale "${locale}"`);
     }
     
-    // Clear loading state and create cards container
-    block.textContent = '';
-    const ul = document.createElement('ul');
-    ul.className = 'cf-card-list';
+    // Create card with fetched data
+    const teaserItem = teasers[0]; // Use first item
+    const card = createCard(teaserItem);
     
-    // Create card for each teaser (usually just one)
-    teasers.forEach((teaserItem) => {
-      const card = createCard(teaserItem);
-      console.log('CF-Card: Card created:', card);
-      ul.appendChild(card);
-      console.log('CF-Card: Card appended to ul:', card);
-    });
-    console.log('CF-Card: UL created:', ul);
-    block.appendChild(ul);
-    console.log('CF-Card: Block appended with UL:', block);
+    // Move instrumentation from loading card to new card
+    moveInstrumentation(loadingCard, card);
+    
+    // Replace loading card with actual card
+    ul.replaceChild(card, loadingCard);
+    
+    console.log(`CF-Cards: Successfully loaded card for slug "${slug}"`);
+    
   } catch (error) {
-    console.error('CF-Card error:', error);
-    showError(block, error.message);
+    console.error(`CF-Cards: Error loading slug "${slug}":`, error);
+    
+    // Create error card
+    const errorCard = createErrorCard(slug, error.message);
+    
+    // Move instrumentation from loading card to error card
+    moveInstrumentation(loadingCard, errorCard);
+    
+    // Replace loading card with error card
+    ul.replaceChild(errorCard, loadingCard);
   }
+}
+
+/**
+ * Main decoration function for cf-cards block
+ * @param {HTMLElement} block - The cf-cards block element
+ */
+export default async function decorate(block) {
+  const locale = getLocaleFromURL();
+  
+  console.log(`CF-Cards: Processing block with locale "${locale}"`);
+  
+  // Create container ul
+  const ul = document.createElement('ul');
+  ul.className = 'cf-cards-list';
+  
+  // Process each cf-card row
+  const rows = [...block.children];
+  
+  // Process all rows in parallel for better performance
+  const promises = rows.map(row => processCardRow(row, ul, locale));
+  
+  // Clear block and add container
+  block.textContent = '';
+  block.appendChild(ul);
+  
+  // Wait for all cards to load
+  await Promise.allSettled(promises);
+  
+  console.log('CF-Cards: All cards processed');
 }
