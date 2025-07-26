@@ -69,7 +69,7 @@
   margin-bottom: 0;
 }
 
-/* Loading and error states */
+/* Loading, error, and placeholder states */
 .cf-cards-loading {
   text-align: center;
   padding: 20px;
@@ -92,6 +92,27 @@
 
 .cf-cards-error .cf-cards-card-body {
   padding: 20px;
+}
+
+.cf-cards-placeholder {
+  text-align: center;
+  padding: 20px;
+  color: #1976d2;
+  background-color: #e3f2fd;
+  border-radius: 4px;
+  border: 1px solid #bbdefb;
+}
+
+.cf-cards-placeholder .cf-cards-card-body {
+  padding: 20px;
+}
+
+.cf-cards-placeholder .cf-cards-title {
+  color: #1976d2;
+}
+
+.cf-cards-placeholder .cf-cards-description {
+  color: #1565c0;
 }
 
 /* RTL support for Arabic variants */

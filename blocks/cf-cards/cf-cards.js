@@ -158,13 +158,38 @@ function createErrorCard(slug, error) {
 }
 
 /**
+ * Create configuration placeholder for an unconfigured CF Card
+ * @returns {HTMLElement} The configuration placeholder element
+ */
+function createConfigurationPlaceholder() {
+  const li = document.createElement('li');
+  li.className = 'cf-cards-card cf-cards-placeholder';
+  li.innerHTML = `
+    <div class="cf-cards-card-body">
+      <h3 class="cf-cards-title">Configure CF Card</h3>
+      <p class="cf-cards-description">Please add a Card Slug in the component properties to load content from GraphQL.</p>
+    </div>
+  `;
+  return li;
+}
+
+/**
  * Process a single cf-card row
  * @param {HTMLElement} row - The cf-card row element
  * @param {HTMLElement} ul - The container ul element
  * @param {string} locale - The locale code
  */
 async function processCardRow(row, ul, locale) {
-  // Extract slug from the first cell
+  // Check if this is a CF Card component that hasn't been configured yet
+  if (row.hasAttribute('data-aue-model') && row.getAttribute('data-aue-model') === 'cf-card') {
+    // This is an unconfigured CF Card - create a placeholder
+    const placeholder = createConfigurationPlaceholder();
+    moveInstrumentation(row, placeholder);
+    ul.appendChild(placeholder);
+    return;
+  }
+  
+  // Extract slug from the first cell (for configured CF Cards)
   const slugCell = row.querySelector('div:first-child');
   if (!slugCell) {
     console.warn('CF-Cards: No slug found in row', row);
