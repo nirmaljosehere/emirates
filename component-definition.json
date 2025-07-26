@@ -225,6 +225,21 @@
           }
         },
         {
+          "title": "CF Card",
+          "id": "cf-card",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "CF Card",
+                  "model": "cf-card"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Flight Booking Widget",
           "id": "flight-booking",
           "plugins": {

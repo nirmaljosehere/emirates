@@ -1,21 +1,6 @@
 {
   "definitions": [
     {
-      "title": "CF Cards",
-      "id": "cf-cards",
-      "plugins": {
-        "xwalk": {
-          "page": {
-            "resourceType": "core/franklin/components/block/v1/block",
-            "template": {
-              "name": "CF Cards",
-              "filter": "cf-cards"
-            }
-          }
-        }
-      }
-    },
-    {
       "title": "CF Card",
       "id": "cf-card",
       "plugins": {
