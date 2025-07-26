@@ -14,7 +14,6 @@
       "title",
       "hero",
       "emirates-hero",
-      "cf-cards",
       "cards",
       "columns",
       "fragment",
@@ -30,12 +29,6 @@
     ]
   },
   {
-    "id": "cf-cards",
-    "components": [
-      "cf-card"
-    ]
-  },
-  {
     "id": "columns",
     "components": [
       "column"
@@ -48,15 +41,13 @@
       "image",
       "button",
       "title",
-      "teaser",
-      "cf-cards"
+      "teaser"
     ]
   },
   {
     "id": "emirates",
     "components": [
-      "emirates-hero",
-      "cf-cards"
+      "emirates-hero"
     ]
   },
   {

@@ -173,7 +173,7 @@ async function processCardRow(row, ul, locale) {
   
   const slug = slugCell.textContent.trim();
   if (!slug) {
-    console.warn('CF-Cards: Empty slug in row', row);
+    // Skip empty rows silently (happens when CF Cards block is first created)
     return;
   }
   

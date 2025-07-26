@@ -96,22 +96,7 @@
               }
             }
           }
-        },
-        {
-          "title": "CF Cards",
-          "id": "cf-cards",
-          "plugins": {
-              "xwalk": {
-                  "page": {
-                      "resourceType": "core/franklin/components/block/v1/block",
-                      "template": {
-                        "name": "CF Cards",
-                        "filter": "cf-cards"               
-                      }
-                  }
-              }
-          }
-        }        
+        }
       ]
     },
     {
@@ -225,21 +210,6 @@
           }
         },
         {
-          "title": "CF Card",
-          "id": "cf-card",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "CF Card",
-                  "model": "cf-card"
-                }
-              }
-            }
-          }
-        },
-        {
           "title": "Flight Booking Widget",
           "id": "flight-booking",
           "plugins": {
@@ -281,7 +251,6 @@
         "image",
         "button",
         "emirates-hero",
-        "cf-cards",
         "cards",
         "columns",
         "fragment",
