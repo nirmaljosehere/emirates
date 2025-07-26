@@ -1,0 +1,110 @@
+/* CF-Card block styling */
+.cf-card {
+  padding-top: 32px;
+}
+
+.cf-card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
+  grid-gap: 60px;
+}
+
+.cf-card-card {
+  border: 1px solid #dadada;
+  background-color: var(--background-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cf-card-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.cf-card-card-image {
+  line-height: 0;
+}
+
+.cf-card-card-image img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.cf-card-card-body {
+  margin: 16px;
+}
+
+.cf-card-pre-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #5c0931;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+
+.cf-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.cf-card-description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.cf-card-description p {
+  margin: 0 0 12px 0;
+}
+
+.cf-card-description p:last-child {
+  margin-bottom: 0;
+}
+
+/* Loading and error states */
+.cf-card-loading {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.cf-card-error {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #d32f2f;
+  background-color: #ffebee;
+  border-radius: 4px;
+  border: 1px solid #ffcdd2;
+}
+
+/* RTL support for Arabic variants */
+.cf-card[dir="rtl"] .cf-card-card-body,
+.cf-card.arabic-variants .cf-card-card-body {
+  text-align: right;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .cf-card-list {
+    grid-template-columns: 1fr;
+    grid-gap: 30px;
+  }
+  
+  .cf-card {
+    padding-top: 20px;
+  }
+  
+  .cf-card-title {
+    font-size: 18px;
+  }
+}

@@ -372,5 +372,17 @@
         "value": "image-left"
       }
     ]
+  },
+  {
+    "id": "cf-card",
+    "fields": [
+      {
+        "component": "text-input",
+        "name": "card-slug",
+        "value": "",
+        "label": "Card Slug",
+        "valueType": "string"
+      }
+    ]
   }
 ]
