@@ -43,7 +43,7 @@ async function fetchTeaserData(slug, locale) {
     ? 'https://author-p135360-e1341441.adobeaemcloud.com' 
     : 'https://publish-p135360-e1341441.adobeaemcloud.com';
   
-  const endpoint = `${baseUrl}/graphql/execute.json/emirates/get-teaser-by-slug;slug=${slug};locale=${locale}`;
+  const endpoint = `${baseUrl}/graphql/execute.json/emirates/get-teaser-by-slug;slug=${slug};locale=${locale};`;
   
   console.log(`CF-Card: Using ${isUE ? 'author' : 'publish'} endpoint: ${endpoint}`);
   
