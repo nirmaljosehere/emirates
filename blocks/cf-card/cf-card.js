@@ -19,13 +19,33 @@ function getLocaleFromURL() {
 }
 
 /**
+ * Check if we're in Universal Editor environment
+ * @returns {boolean} True if in Universal Editor
+ */
+function isUniversalEditor() {
+  // Check for Universal Editor specific indicators
+  return window.location.pathname.includes('/content/emirates/') || 
+         window.location.search.includes('wcmmode=edit') ||
+         window.parent !== window || // Running in iframe
+         document.querySelector('script[src*="universal-editor"]') !== null;
+}
+
+/**
  * Fetch teaser data from GraphQL endpoint
  * @param {string} slug - The teaser slug
  * @param {string} locale - The locale code
  * @returns {Promise} The fetch promise
  */
 async function fetchTeaserData(slug, locale) {
-  const endpoint = `https://publish-p135360-e1341441.adobeaemcloud.com/graphql/execute.json/emirates/get-teaser-by-slug;slug=${slug};locale=${locale}`;
+  // Use author endpoint in Universal Editor, publish endpoint otherwise
+  const isUE = isUniversalEditor();
+  const baseUrl = isUE 
+    ? 'https://author-p135360-e1341441.adobeaemcloud.com' 
+    : 'https://publish-p135360-e1341441.adobeaemcloud.com';
+  
+  const endpoint = `${baseUrl}/graphql/execute.json/emirates/get-teaser-by-slug;slug=${slug};locale=${locale}`;
+  
+  console.log(`CF-Card: Using ${isUE ? 'author' : 'publish'} endpoint: ${endpoint}`);
   
   try {
     const response = await fetch(endpoint);
