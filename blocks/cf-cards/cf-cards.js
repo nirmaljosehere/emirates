@@ -118,7 +118,7 @@ function createCard(teaserItem) {
     description.innerHTML = teaserItem.description.html;
     bodyDiv.appendChild(description);
   }
-  
+  console.log('CF-Cards: Card created:', li);
   li.appendChild(bodyDiv);
   return li;
 }
@@ -186,31 +186,35 @@ async function processCardRow(row, ul, locale) {
   const modelAttr = row.getAttribute('data-aue-model');
   console.log('CF-Cards: Model attribute:', modelAttr);
   
-  // Check if this is a CF Card component that hasn't been configured yet
-  if (row.hasAttribute('data-aue-model') && modelAttr === 'cf-card') {
-    console.log('CF-Cards: Found unconfigured CF Card');
-    // This is an unconfigured CF Card - create a placeholder
+  // Extract slug first - try different selectors
+  let slug = '';
+  
+  // Try to find slug in different possible locations
+  const slugByProp = row.querySelector('[data-aue-prop="card-slug"]');
+  const slugByDiv = row.querySelector('div:first-child');
+  
+  if (slugByProp) {
+    slug = slugByProp.textContent.trim();
+    console.log('CF-Cards: Found slug by data-aue-prop:', slug);
+  } else if (slugByDiv) {
+    slug = slugByDiv.textContent.trim();
+    console.log('CF-Cards: Found slug by div selector:', slug);
+  }
+  
+  console.log('CF-Cards: Final extracted slug:', slug);
+  
+  // If no slug found and this is a CF Card model, show configuration placeholder
+  if (!slug && modelAttr === 'cf-card') {
+    console.log('CF-Cards: CF Card with no slug - showing configuration placeholder');
     const placeholder = createConfigurationPlaceholder();
     moveInstrumentation(row, placeholder);
     ul.appendChild(placeholder);
     return;
   }
   
-  // Extract slug from the first cell (for configured CF Cards)
-  const slugCell = row.querySelector('div:first-child');
-  console.log('CF-Cards: Slug cell found:', slugCell);
-  
-  if (!slugCell) {
-    console.warn('CF-Cards: No slug found in row', row);
-    console.log('CF-Cards: Row HTML:', row.outerHTML);
-    return;
-  }
-  
-  const slug = slugCell.textContent.trim();
-  console.log('CF-Cards: Extracted slug:', slug);
-  
+  // If no slug found at all, skip
   if (!slug) {
-    console.log('CF-Cards: Empty slug, skipping');
+    console.log('CF-Cards: No slug found, skipping row');
     return;
   }
   
