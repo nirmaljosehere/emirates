@@ -270,3 +270,90 @@ u {
   text-decoration-thickness: 4px;
   text-underline-offset: 8px;
 }
+
+/* Arabic RTL Language Support - Proper RTL behavior */
+
+/* RTL Layout: Right-to-left reading direction */
+body.rtl-layout {
+  direction: rtl;
+}
+
+/* RTL Text Alignment Rules:
+   - Center stays center
+   - Left becomes right  
+   - Right becomes left
+*/
+
+/* Convert left-aligned elements to right-aligned in RTL */
+body.rtl-layout [style*="text-align: left"],
+body.rtl-layout .text-left,
+body.rtl-layout p:not([style*="text-align"]):not(.text-center):not(.text-right),
+body.rtl-layout div:not([style*="text-align"]):not(.text-center):not(.text-right),
+body.rtl-layout h1:not([style*="text-align"]):not(.text-center):not(.text-right),
+body.rtl-layout h2:not([style*="text-align"]):not(.text-center):not(.text-right),
+body.rtl-layout h3:not([style*="text-align"]):not(.text-center):not(.text-right),
+body.rtl-layout h4:not([style*="text-align"]):not(.text-center):not(.text-right),
+body.rtl-layout h5:not([style*="text-align"]):not(.text-center):not(.text-right),
+body.rtl-layout h6:not([style*="text-align"]):not(.text-center):not(.text-right) {
+  text-align: right !important;
+}
+
+/* Convert right-aligned elements to left-aligned in RTL */
+body.rtl-layout [style*="text-align: right"],
+body.rtl-layout .text-right {
+  text-align: left !important;
+}
+
+/* Keep center-aligned elements centered in RTL */
+body.rtl-layout [style*="text-align: center"],
+body.rtl-layout .text-center {
+  text-align: center !important;
+}
+
+/* Block-specific RTL adjustments */
+body.rtl-layout .cards-card-body,
+body.rtl-layout .cf-cards-card-body {
+  text-align: right;
+}
+
+body.rtl-layout .hero h1,
+body.rtl-layout .hero p {
+  text-align: right;
+}
+
+/* Carousel slides - convert left-aligned content to right-aligned */
+body.rtl-layout .carousel .slide-content h1,
+body.rtl-layout .carousel .slide-content h2,
+body.rtl-layout .carousel .slide-content h3,
+body.rtl-layout .carousel .slide-content p {
+  text-align: right;
+}
+
+/* Keep centered hero content centered */
+body.rtl-layout .hero[style*="text-align: center"] h1,
+body.rtl-layout .hero[style*="text-align: center"] p,
+body.rtl-layout .hero.text-center h1,
+body.rtl-layout .hero.text-center p {
+  text-align: center !important;
+}
+
+/* Navigation and footer adjustments for RTL */
+body.rtl-layout nav,
+body.rtl-layout .nav,
+body.rtl-layout footer {
+  direction: rtl;
+}
+
+/* Button containers should flow RTL but keep button text alignment */
+body.rtl-layout .button-container {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Form elements RTL support */
+body.rtl-layout input,
+body.rtl-layout textarea,
+body.rtl-layout select {
+  text-align: right;
+  direction: rtl;
+}

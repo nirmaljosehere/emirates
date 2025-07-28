@@ -79,20 +79,34 @@ function createCard(teaserItem, baseUrl) {
     const fullImageUrl = `${baseUrl}${teaserItem.primaryImage._dynamicUrl}`;
     console.log('CF-Cards: Full image URL:', fullImageUrl);
     
-    // Create optimized picture element
-    const img = document.createElement('img');
-    img.src = fullImageUrl;
-    img.alt = teaserItem.title || '';
-    img.loading = 'lazy';
+    // Check if we're on Edge Delivery Services (published site)
+    const isEdgeDelivery = window.location.hostname.includes('.aem.page') || window.location.hostname.includes('.aem.live');
     
-    const optimizedPic = createOptimizedPicture(
-      fullImageUrl, 
-      teaserItem.title || '', 
-      false, 
-      [{ width: '750' }]
-    );
+    if (isEdgeDelivery) {
+      // For published Edge Delivery sites, use the AEM Cloud image URL directly
+      // Don't use createOptimizedPicture as it tries to serve through Edge Delivery domain
+      const img = document.createElement('img');
+      img.src = fullImageUrl;
+      img.alt = teaserItem.title || '';
+      img.loading = 'lazy';
+      img.style.width = '100%';
+      img.style.height = 'auto';
+      
+      imageDiv.appendChild(img);
+      console.log('CF-Cards: Using direct AEM Cloud image URL for Edge Delivery site');
+    } else {
+      // For author environment, use createOptimizedPicture
+      const optimizedPic = createOptimizedPicture(
+        fullImageUrl, 
+        teaserItem.title || '', 
+        false, 
+        [{ width: '750' }]
+      );
+      
+      imageDiv.appendChild(optimizedPic);
+      console.log('CF-Cards: Using createOptimizedPicture for author environment');
+    }
     
-    imageDiv.appendChild(optimizedPic);
     li.appendChild(imageDiv);
   }
   

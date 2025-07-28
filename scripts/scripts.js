@@ -86,11 +86,30 @@ export function decorateMain(main) {
 }
 
 /**
+ * Detects Arabic language from URL and sets appropriate RTL language attributes
+ */
+function setupLanguageSupport() {
+  const currentPath = window.location.pathname;
+  
+  // Check if URL contains /ar/ for Arabic language
+  if (currentPath.includes('/ar/')) {
+    document.documentElement.lang = 'ar';
+    document.documentElement.dir = 'rtl';
+    document.body.classList.add('arabic-lang', 'rtl-layout');
+    console.log('Arabic language detected - RTL layout enabled');
+  } else {
+    document.documentElement.lang = 'en';
+    document.documentElement.dir = 'ltr';
+    document.body.classList.add('ltr-layout');
+  }
+}
+
+/**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  setupLanguageSupport();
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
